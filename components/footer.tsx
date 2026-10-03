@@ -28,7 +28,7 @@ export function Footer() {
             <p className="contact-description">
               {copy.contactSection.description}
             </p>
-            <ContactLink />
+            <ContactLink source="footer" />
             <p className="contact-note">
               {profile.telegram
                 ? copy.contactSection.note

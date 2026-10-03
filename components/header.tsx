@@ -25,7 +25,7 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <ContactLink compact />
+        <ContactLink compact source="header" />
       </div>
     </header>
   );

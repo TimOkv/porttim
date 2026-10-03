@@ -78,3 +78,20 @@ export const about: {
 - Ничего не публикуется: никаких `vercel`, `git push`, деплоев.
 - Git: не коммить — коммит делает оркестратор после ревью.
 - Если не хватает зависимости — не добавляй сам, верни `BLOCKED` с названием.
+
+## Из таска 01 — кейсы, полоса цифр, ссылки в Telegram
+
+- `data/projects.ts`: `Project` — по форме выше; `metrics` определён после `projects`, первая запись
+  `value: projects.length`; `profile.telegram = getContactLink()` — своей копии имени аккаунта в данных нет.
+- `copy.projects`: добавлены `dialogValue`, `dialogTags`, `view`; убраны `previewNote`, `dialogNote`,
+  `dialogLabel`, `dialogStack`.
+- `lib/telegram.ts` экспортирует только `telegramUsername`, `getContactLink(source?: ContactSource)`,
+  `getProjectContactLink(project: { title: string })`, типы `ContactSource`, `ContactProject`.
+  Не пиши свою сборку ссылки — бери отсюда.
+- `ContactLink({ children?, className?, compact?, source?, project? })` — кнопка связи; для секции
+  «Обо мне» точка входа `default`.
+- `components/project-preview.tsx` удалён вместе со стилями превью.
+- CSS-классы карточки и окна кейса: `.project-result`, `.project-description`, `.project-format`,
+  `.dialog-format`, `.dialog-actions`. Сетка кейсов: 3 колонки, 2 — до 1100 px, 1 — на телефоне.
+- Тесты: 14 тестов × 2 профиля в `tests/portfolio.spec.ts`; ожидаемые количества берутся из данных.
+  Тест чипа стека «Python & API» пока проверяет прежний стек — его заменяет таск 02.

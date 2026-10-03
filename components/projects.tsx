@@ -9,12 +9,45 @@ import {
   type Category,
   type Project,
 } from "@/data/projects";
-import { ProjectPreview } from "./project-preview";
 import { ContactLink } from "./contact-link";
 import { cn } from "@/lib/utils";
 
+type Filter = Category | "all";
+
+// Кнопку получает только категория, в которой есть хотя бы один кейс.
+const filters: Filter[] = [
+  "all",
+  ...categories.filter((item) =>
+    projects.some((project) => project.category === item),
+  ),
+];
+
+// Выделенный результат: число (если владелец его назвал) и строка текста.
+function Result({ result }: { result: Project["result"] }) {
+  return (
+    <span className="project-result">
+      {result.value && (
+        <>
+          <strong>{result.value}</strong>{" "}
+        </>
+      )}
+      <span>{result.text}</span>
+    </span>
+  );
+}
+
+function Tags({ tags }: { tags: string[] }) {
+  return (
+    <div className="project-tags">
+      {tags.map((tag) => (
+        <span key={tag}>{tag}</span>
+      ))}
+    </div>
+  );
+}
+
 export function Projects() {
-  const [category, setCategory] = useState<Category | "all">("all");
+  const [category, setCategory] = useState<Filter>("all");
   const [selected, setSelected] = useState<Project | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const reduced = useReducedMotion();
@@ -66,7 +99,7 @@ export function Projects() {
       </div>
       <div className="project-toolbar">
         <div className="filters" role="group" aria-label={copy.projects.all}>
-          {(["all", ...categories] as const).map((item) => (
+          {filters.map((item) => (
             <button
               key={item}
               type="button"
@@ -85,10 +118,7 @@ export function Projects() {
           {filtered.length.toString().padStart(2, "0")} / {copy.projects.count}
         </span>
       </div>
-      <motion.div
-        layout={!reduced}
-        className={cn("bento-grid", category !== "all" && "filtered-grid")}
-      >
+      <motion.div layout={!reduced} className="bento-grid">
         <AnimatePresence mode="popLayout" initial={false}>
           {filtered.map((project) => (
             <motion.article
@@ -98,10 +128,7 @@ export function Projects() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: reduced ? 1 : 0.96 }}
               transition={{ duration: reduced ? 0 : 0.3 }}
-              className={cn(
-                "project-card",
-                project.featured && category === "all" && "project-featured",
-              )}
+              className="project-card"
               onPointerMove={moveGlow}
             >
               <button
@@ -110,27 +137,21 @@ export function Projects() {
                 onClick={() => setSelected(project)}
                 aria-label={`${copy.projects.details}: ${project.title}`}
               >
-                <div className="preview-wrap">
-                  <ProjectPreview project={project} />
-                  <span className="preview-note">
-                    {copy.projects.previewNote}
-                  </span>
-                  <span className="project-number">{project.number}</span>
-                </div>
                 <div className="project-body">
                   <div className="project-kicker">
-                    <span>{project.subtitle}</span>
+                    <span>
+                      <span className="project-number">{project.number}</span>
+                      {project.label}
+                    </span>
                     <span className="project-arrow">
                       <ArrowUpRight size={19} />
                     </span>
                   </div>
                   <h3>{project.title}</h3>
-                  <p>{project.description}</p>
-                  <div className="project-tags">
-                    {project.tags.map((tag) => (
-                      <span key={tag}>{tag}</span>
-                    ))}
-                  </div>
+                  <Result result={project.result} />
+                  <p className="project-description">{project.description}</p>
+                  <span className="project-format">{project.format}</span>
+                  <Tags tags={project.tags} />
                 </div>
               </button>
             </motion.article>
@@ -182,22 +203,32 @@ export function Projects() {
             >
               <X size={21} />
             </button>
-            <ProjectPreview project={selected} />
             <div className="dialog-body">
-              <p className="eyebrow">
-                {selected.category} / {copy.projects.dialogLabel}
-              </p>
+              <p className="eyebrow">{selected.label}</p>
+              <p className="dialog-format">{selected.format}</p>
               <h2 id="dialog-title">{selected.title}</h2>
+              <Result result={selected.result} />
               <p>{selected.description}</p>
-              <h3>{copy.projects.dialogStack}</h3>
-              <div className="project-tags">
-                {selected.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
-              </div>
-              <p className="dialog-note">{copy.projects.dialogNote}</p>
-              <div onClick={() => setSelected(null)}>
-                <ContactLink>{copy.projects.discuss}</ContactLink>
+              <h3>{copy.projects.dialogValue}</h3>
+              <p>{selected.value}</p>
+              <h3>{copy.projects.dialogTags}</h3>
+              <Tags tags={selected.tags} />
+              <div className="dialog-actions" onClick={() => setSelected(null)}>
+                <ContactLink project={selected}>
+                  {copy.projects.discuss}
+                </ContactLink>
+                {/* Появится, когда владелец впишет кейсу публичную ссылку. */}
+                {selected.url && (
+                  <a
+                    className="button-secondary"
+                    href={selected.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {copy.projects.view}
+                    <ArrowUpRight size={17} aria-hidden="true" />
+                  </a>
+                )}
               </div>
             </div>
           </>

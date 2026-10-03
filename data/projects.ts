@@ -1,31 +1,32 @@
+import { getContactLink } from "@/lib/telegram";
+
 export type Category = "Web" | "AI & Bots" | "Automation";
-export type ProjectStat = { label: string; value: string };
 export type Project = {
   id: string;
   number: string;
+  // Фильтр в сетке кейсов.
   category: Category;
+  // Подкатегория из задачи, подпись на карточке: "Web / EdTech".
+  label: string;
+  format: string;
   title: string;
-  subtitle: string;
+  // Метрика кейса. value — только число, названное владельцем; у остальных результат сказан словами.
+  result: { value?: string; text: string };
   description: string;
+  // Ценность для бизнеса — полным текстом в окне кейса.
+  value: string;
   tags: string[];
-  // Только факты из спецификации; измеримые результаты добавлять сюда же, когда появятся реальные цифры.
-  stats: ProjectStat[];
-  visual: "website" | "agent" | "workflow" | "landing" | "bot" | "quest";
-  featured?: boolean;
-  preview: { brand: string; heading: string; detail: string };
+  // Публичная ссылка: с ней в окне кейса появляется кнопка «Посмотреть проект».
+  url?: string;
 };
 
-const username = (process.env.NEXT_PUBLIC_TELEGRAM_USERNAME ?? "opskeeper")
-  .trim()
-  .replace(/^@/, "");
 export const profile = {
   name: process.env.NEXT_PUBLIC_PROFILE_NAME || "TimA",
   initials: "T.",
   role: "AI & Fullstack Developer",
   portrait: process.env.NEXT_PUBLIC_PORTRAIT_SRC || "/portrait.jpg",
-  telegram: /^[a-zA-Z][a-zA-Z0-9_]{4,31}$/.test(username)
-    ? `https://t.me/${username}?text=${encodeURIComponent("Привет! Хочу обсудить с вами проект.")}`
-    : null,
+  // Ссылку строит модуль ссылок: имя аккаунта и правило его проверки живут только там.
+  telegram: getContactLink(),
 };
 
 export const copy = {
@@ -67,21 +68,19 @@ export const copy = {
   },
   metricsLabel: "Результат в цифрах",
   projects: {
-    eyebrow: "01 / ИЗБРАННЫЕ ПРОЕКТЫ",
-    title: "Идеи становятся",
-    accent: "продуктами.",
+    eyebrow: "01 / РЕАЛИЗОВАННЫЕ КЕЙСЫ",
+    title: "Кейсы.",
+    accent: "Что сделано и что это дало.",
     description:
-      "Веб, искусственный интеллект и автоматизация.\nРазные задачи — один продуманный подход.",
+      "Веб, AI-боты и автоматизация.\nВ каждой карточке — формат, суть работы и ценность для бизнеса.",
     all: "Все проекты",
     count: "проектов",
     details: "Подробнее о проекте",
     close: "Закрыть описание проекта",
-    dialogLabel: "О проекте",
-    dialogStack: "Технологии",
-    previewNote: "Концептуальное превью",
-    dialogNote:
-      "Визуальное превью иллюстрирует направление проекта. Описание — по проектной спецификации.",
+    dialogValue: "Ценность для бизнеса",
+    dialogTags: "Теги",
     discuss: "Обсудить похожую задачу",
+    view: "Посмотреть проект",
   },
   stack: {
     eyebrow: "02 / ИНСТРУМЕНТЫ",
@@ -107,220 +106,167 @@ export const copy = {
   },
 };
 
+export const categories = ["Web", "AI & Bots", "Automation"] as const;
+// Тексты кейсов окончательные и согласованы с владельцем: формат, описание и ценность — его слова.
+// Кейсы 02 и 03 сделаны на чужой платформе EasyLab: заявлена только своя часть работы.
+export const projects: Project[] = [
+  {
+    id: "1c-portal",
+    number: "01",
+    category: "Web",
+    label: "Web",
+    format: "Масштабный многостраничный веб-ресурс",
+    title: "Корпоративный портал 1С-решений",
+    result: { text: "Понятный путь от каталога услуг до заявки" },
+    description:
+      "Разработка архитектуры под каталог B2B-услуг, кейсы внедрения 1С и лидогенерацию.",
+    value:
+      "Чёткая конверсионная структура для enterprise-сегмента, высокая скорость загрузки.",
+    tags: ["Многостраничный сайт", "B2B", "Next.js", "TypeScript"],
+  },
+  {
+    id: "web-quest",
+    number: "02",
+    category: "Web",
+    label: "Web / Interactive",
+    format: "Интерактивный браузерный квест",
+    title: "Геймифицированный Web-квест",
+    result: { text: "Вовлечение через игру вместо сухой теории" },
+    description:
+      "Разработка интерактивного сценария на базе платформы EasyLab: проектирование игрового обучающего сценария и механик вовлечения учеников.",
+    value:
+      "Высокий Retention и вовлечение пользователей через геймификацию вместо сухой теории.",
+    tags: ["EasyLab", "Геймификация", "Игровая логика"],
+  },
+  {
+    id: "webinar-landing",
+    number: "03",
+    category: "Web",
+    label: "Web / EdTech",
+    format: "Конверсионный промо-лендинг",
+    title: "Интерактивный вебинарный лендинг",
+    result: { text: "Из трафика — в регистрацию и на эфир" },
+    description:
+      "Разработка контентного модуля на базе платформы EasyLab: посадочный модуль под проведение вебинаров и открытых уроков онлайн-школы.",
+    value:
+      "Максимизация конверсии из трафика в регистрацию и присутствие на эфире.",
+    tags: ["EasyLab", "Лендинг", "EdTech"],
+  },
+  {
+    id: "materials-catalog",
+    number: "04",
+    category: "Web",
+    label: "Web / E-commerce",
+    format: "Коммерческий посадочный сайт",
+    title: "Каталог стройматериалов с лидогенерацией",
+    result: { value: "100%", text: "заявок фиксируются без задержек" },
+    description:
+      "Каталог оптово-розничной продажи с формой экспресс-расчёта и моментальной фиксацией входящих заявок в таблицы.",
+    value:
+      "100% лидов фиксируются без задержек и человеческого фактора.",
+    tags: ["Каталог", "Форма расчёта", "Google Sheets", "Next.js"],
+  },
+  {
+    id: "card-agent",
+    number: "05",
+    category: "AI & Bots",
+    label: "AI",
+    format: "Автономный генеративный агент",
+    title: "AI-агент генерации образовательных карточек",
+    result: { text: "В разы меньше рутины у методистов" },
+    description:
+      "Специализированный AI-ассистент на базе LLM для автоматического создания структурированных дидактических карточек и учебных заданий.",
+    value:
+      "Сокращение рутинного времени методистов на подготовку контента в разы.",
+    tags: ["LLM", "Prompt Engineering", "AI Agents"],
+  },
+  {
+    id: "school-assistant",
+    number: "06",
+    category: "AI & Bots",
+    label: "AI / Bots",
+    format: "Telegram-бот + LLM",
+    title: "Школьный AI-ассистент & Инфо-хаб",
+    result: { value: "80%", text: "типовых школьных вопросов — без участия человека" },
+    description:
+      "Цифровой хаб школы (расписание, звонки, меню столовой) со встроенной нейросетью-помощником для разбора учебных заданий.",
+    value:
+      "Круглосуточная автоматизация ответов на 80% типовых школьных вопросов.",
+    tags: ["Telegram Bot API", "LLM", "Python"],
+  },
+  {
+    id: "lead-bot-parser",
+    number: "07",
+    category: "AI & Bots",
+    label: "AI / Bots",
+    format: "Telegram-сервис + Parser",
+    title: "Telegram-бот сбора заявок и парсер",
+    result: { text: "Заявки и внешние данные — в одном канале" },
+    description:
+      "Бот сбора и квалификации входящих заявок, совмещённый с модулем парсинга данных с внешнего веб-ресурса.",
+    value:
+      "Автономный мониторинг внешних данных и агрегация заявок в единый канал.",
+    tags: ["Telegram Bot API", "Парсинг", "Python"],
+  },
+  {
+    id: "web-to-sheets",
+    number: "08",
+    category: "Automation",
+    label: "Automation",
+    format: "Конвейер интеграции (Webhooks / APIs)",
+    title: "Сквозной пайплайн передачи данных (Web → Sheets)",
+    result: { text: "Без ручного копирования контактов" },
+    description:
+      "Автоматизированный захват данных формы сайта, валидация и мгновенная запись в таблицы в реальном времени.",
+    value:
+      "Полное исключение ручного копирования контактов менеджерами.",
+    tags: ["Webhooks", "REST APIs", "Google Sheets", "n8n"],
+  },
+  {
+    id: "service-sync",
+    number: "09",
+    category: "Automation",
+    label: "Automation",
+    format: "Системный конвейер",
+    title: "Автоматизация фоновой синхронизации сервисов",
+    result: { text: "Служебные данные доходят сами" },
+    description:
+      "Фоновый скрипт/пайплайн обмена данными между внешними сервисами и рабочими чатами уведомлений.",
+    value:
+      "Бесперебойная синхронизация служебной информации без участия человека.",
+    tags: ["n8n", "Docker", "Уведомления в чат"],
+  },
+];
+
+// Каждая цифра подтверждается кейсом; первая считается из данных и растёт вместе с ними.
 export const metrics = [
   {
-    value: 8,
+    value: projects.length,
     prefix: "",
-    suffix: "+",
-    label: "Цифровых проектов",
-    note: "От концепции до запуска",
+    suffix: "",
+    label: "Реализованных кейсов",
+    note: "Web, AI-боты и автоматизация",
   },
   {
     value: 100,
     prefix: "",
     suffix: "%",
-    label: "Автономия процессов",
-    note: "В ключевых сценариях",
+    label: "Заявок фиксируются автоматически",
+    note: "Кейс: каталог стройматериалов",
   },
   {
-    value: 2,
-    prefix: "< ",
-    suffix: " нед.",
-    label: "От идеи до MVP",
-    note: "Средний цикл разработки",
+    value: 80,
+    prefix: "",
+    suffix: "%",
+    label: "Типовых вопросов закрывает бот",
+    note: "Кейс: школьный AI-ассистент",
   },
   {
     value: 24,
     prefix: "",
     suffix: "/7",
-    label: "AI всегда на связи",
-    note: "Без пауз и выходных",
-  },
-];
-export const categories = ["Web", "AI & Bots", "Automation"] as const;
-export const projects: Project[] = [
-  {
-    id: "corporate",
-    number: "01",
-    category: "Web",
-    title: "Больше, чем корпоративный сайт",
-    subtitle: "ВЕБ-ПЛАТФОРМА",
-    description:
-      "Многостраничный веб-ресурс со сложной архитектурой, каталогом услуг и оптимизацией производительности. Продуманная структура помогает быстро найти нужное и перейти к действию.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
-    stats: [
-      { label: "Формат", value: "Многостраничный сайт" },
-      { label: "Фокус", value: "Структура и производительность" },
-    ],
-    visual: "website",
-    featured: true,
-    preview: {
-      brand: "FORMA®",
-      heading: "Пространство\nдля новых идей.",
-      detail: "Архитектура. Дизайн. Возможности.",
-    },
-  },
-  {
-    id: "ai-support",
-    number: "02",
-    category: "AI & Bots",
-    title: "Поддержка, которая не спит",
-    subtitle: "АВТОНОМНЫЙ AI-АГЕНТ",
-    description:
-      "Интеллектуальный агент с подключённой базой знаний, анализом контекста диалога и сценариями маршрутизации запросов. Помогает клиенту найти ответ и передаёт сложные вопросы команде.",
-    tags: ["LLM APIs", "Python", "n8n"],
-    stats: [
-      { label: "Режим работы", value: "24/7" },
-      { label: "Основа ответов", value: "База знаний" },
-    ],
-    visual: "agent",
-    preview: {
-      brand: "AI ASSISTANT",
-      heading: "Чем могу помочь?",
-      detail: "База знаний подключена",
-    },
-  },
-  {
-    id: "business-automation",
-    number: "03",
-    category: "Automation",
-    title: "Рутина — на автопилоте",
-    subtitle: "БИЗНЕС-АВТОМАТИЗАЦИЯ",
-    description:
-      "Сквозной пайплайн передачи данных между вебхуками, базами данных и сервисами оповещений на базе n8n и Docker. От входящего события до нужного действия в одной цепочке.",
-    tags: ["n8n", "Docker", "Webhooks"],
-    stats: [
-      { label: "Тип", value: "Сквозной пайплайн" },
-      { label: "Платформа", value: "n8n + Docker" },
-    ],
-    visual: "workflow",
-    preview: {
-      brand: "CONNECTED WORKFLOW",
-      heading: "Событие → результат",
-      detail: "Webhook · Обработка · Уведомление",
-    },
-  },
-  {
-    id: "product-landing",
-    number: "04",
-    category: "Web",
-    title: "Первое впечатление решает",
-    subtitle: "ПРОДУКТОВЫЙ ЛЕНДИНГ",
-    description:
-      "Промо-лендинг продукта с акцентным визуальным стилем и интерактивными элементами вовлечения. Сценарий страницы ведёт от знакомства с продуктом к целевому действию.",
-    tags: ["Next.js", "Motion", "UI/UX"],
-    stats: [
-      { label: "Формат", value: "Landing Page" },
-      { label: "Фокус", value: "Вовлечение" },
-    ],
-    visual: "landing",
-    preview: {
-      brand: "ORBIT",
-      heading: "Ваша идея.\nНовая орбита.",
-      detail: "Меньше границ. Больше возможностей.",
-    },
-  },
-  {
-    id: "customer-bot",
-    number: "05",
-    category: "AI & Bots",
-    title: "Весь путь клиента. В одном чате.",
-    subtitle: "TELEGRAM-БОТ",
-    description:
-      "Многофункциональный бот автоматизации клиентского пути с обработкой входящих данных и интеграцией со сторонними сервисами.",
-    tags: ["Python", "Telegram API", "Integrations"],
-    stats: [
-      { label: "Автономия процессов", value: "100%" },
-      { label: "Сценарий", value: "Клиентский путь" },
-    ],
-    visual: "bot",
-    preview: {
-      brand: "YOUR ASSISTANT",
-      heading: "Всё под рукой",
-      detail: "Заявки · Сервисы · Поддержка",
-    },
-  },
-  {
-    id: "web-quest",
-    number: "06",
-    category: "Web",
-    title: "Не просто смотреть. Участвовать.",
-    subtitle: "ИНТЕРАКТИВНЫЙ WEB-КВЕСТ",
-    description:
-      "Геймифицированный веб-проект с логикой квеста, ветвлением решений и вовлекающим сценарием. Пользователь становится участником истории и сам выбирает следующий шаг.",
-    tags: ["TypeScript", "Game Logic", "Web"],
-    stats: [
-      { label: "Формат", value: "Веб-квест" },
-      { label: "Механика", value: "Ветвление решений" },
-    ],
-    visual: "quest",
-    featured: true,
-    preview: {
-      brand: "QUEST / PLAY",
-      heading: "Приключение\nначинается с тебя.",
-      detail: "Исследуй. Решай. Открывай.",
-    },
-  },
-  {
-    id: "lead-landing",
-    number: "07",
-    category: "Web",
-    title: "От интереса к действию",
-    subtitle: "ЛЕНДИНГ ДЛЯ ЛИДОГЕНЕРАЦИИ",
-    description:
-      "Продуктовый лендинг с акцентом на быструю лидогенерацию: понятное предложение, последовательное раскрытие ценности и короткий путь до обращения.",
-    tags: ["Next.js", "Tailwind", "UI/UX"],
-    stats: [
-      { label: "Формат", value: "Landing Page" },
-      { label: "Фокус", value: "Быстрая лидогенерация" },
-    ],
-    visual: "landing",
-    preview: {
-      brand: "POINT.",
-      heading: "Ближе\nк результату.",
-      detail: "Один продукт. Много возможностей.",
-    },
-  },
-  {
-    id: "service-bot",
-    number: "08",
-    category: "AI & Bots",
-    title: "Нужная информация. Вовремя.",
-    subtitle: "СЕРВИСНЫЙ TELEGRAM-БОТ",
-    description:
-      "Бот для мгновенных уведомлений, управления очередями задач и операционной синхронизации. Сервисные события поступают прямо в привычный мессенджер.",
-    tags: ["Telegram API", "Python", "API"],
-    stats: [
-      { label: "Уведомления", value: "Мгновенные" },
-      { label: "Назначение", value: "Операционная синхронизация" },
-    ],
-    visual: "bot",
-    preview: {
-      brand: "SERVICE BOT",
-      heading: "Вы в курсе событий",
-      detail: "Уведомления · Задачи · Статусы",
-    },
-  },
-  {
-    id: "data-automation",
-    featured: true,
-    number: "09",
-    category: "Automation",
-    title: "Данные в нужном месте",
-    subtitle: "СИНХРОНИЗАЦИЯ СЕРВИСОВ",
-    description:
-      "Автономный конвейер обработки данных и синхронизации сервисов без участия человека. Согласованная передача информации между инструментами команды.",
-    tags: ["n8n", "API", "Docker"],
-    stats: [
-      { label: "Тип", value: "Конвейер данных" },
-      { label: "Участие человека", value: "Не требуется" },
-    ],
-    visual: "workflow",
-    preview: {
-      brand: "DATA PIPELINE",
-      heading: "Всё синхронизировано",
-      detail: "Источник · Обработка · Сервис",
-    },
+    label: "Работают AI-ассистенты",
+    note: "Кейс: школьный AI-ассистент",
   },
 ];
 

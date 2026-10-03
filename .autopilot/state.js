@@ -11,7 +11,7 @@ window.STATE =
   "memoryFile": "AGENTS.md",
   "skillDir": "/Users/timofejokunev/.claude/skills/autopilot",
   "startedAt": "2026-10-03T22:04:51+03:00",
-  "updatedAt": "2026-10-03T22:38:58+03:00",
+  "updatedAt": "2026-10-03T22:52:32+03:00",
   "finishedAt": null,
   "stages": [
     {
@@ -40,16 +40,19 @@ window.STATE =
     },
     {
       "id": "plan",
-      "status": "active",
-      "startedAt": "2026-10-03T22:37:31+03:00"
+      "status": "done",
+      "startedAt": "2026-10-03T22:37:31+03:00",
+      "finishedAt": "2026-10-03T22:39:13+03:00"
     },
     {
       "id": "build",
-      "status": "pending"
+      "status": "active",
+      "startedAt": "2026-10-03T22:39:13+03:00",
+      "note": "0 из 2 тасков готовы"
     },
     {
       "id": "review",
-      "status": "pending"
+      "status": "active", "startedAt": "2026-10-03T22:52:32+03:00", "note": "проверяется 1 из 2"
     },
     {
       "id": "final",
@@ -59,7 +62,7 @@ window.STATE =
   "requirements": {
     "total": 50,
     "done": 2,
-    "inTicket": 47,
+    "inTicket": 48,
     "inSpec": 0,
     "placeholder": 0,
     "deferred": 0,
@@ -116,7 +119,8 @@ window.STATE =
         "app/globals.css",
         "tests/"
       ],
-      "status": "pending",
+      "status": "review",
+      "startedAt": "2026-10-03T22:39:13+03:00",
       "retries": 0,
       "repairs": 0,
       "handoffs": 0
@@ -177,8 +181,8 @@ window.STATE =
   },
   "concerns": [],
   "reviewers": {
-    "manifestSpec": null,
-    "craft": null
+    "manifestSpec": "reviewer-ms",
+    "craft": "reviewer-craft"
   },
   "blind": null
 }

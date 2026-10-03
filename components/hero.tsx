@@ -52,7 +52,7 @@ export function Hero() {
         </motion.h1>
         <p className="hero-description">{copy.hero.description}</p>
         <div className="hero-actions">
-          <ContactLink>{copy.hero.primary}</ContactLink>
+          <ContactLink source="hero">{copy.hero.primary}</ContactLink>
           <a className="button-secondary" href="#projects">
             {copy.hero.secondary}
             <ArrowUpRight size={17} />
