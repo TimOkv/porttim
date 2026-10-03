@@ -92,6 +92,9 @@ test("every contact link opens the personal Telegram chat with its own draft", a
   // Плавающая кнопка MAX устроена как кнопка Telegram: значок и подпись, которая раскрывается при наведении.
   const quickMax = page.locator(".quick-max");
   await expect(quickMax).toHaveAccessibleName("Написать в MAX");
+  // Обе плавающие кнопки пульсируют одинаково.
+  for (const button of [quickMax, page.locator(".quick-contact")])
+    await expect(button).toHaveCSS("animation-name", "quick-ping");
   await expect(quickMax.locator("svg")).toHaveCount(1);
   const label = quickMax.locator("span");
   await expect(label).toHaveText("Написать");

@@ -1041,10 +1041,11 @@ main section {
   background: var(--acc-fill);
   animation: quick-ping 2.6s infinite;
 }
-/* MAX — второй канал: тёмная кнопка с обводкой, значок с переливом. */
+/* MAX — второй канал: тёмная кнопка с обводкой, значок с переливом. Пульсирует в противофазе с Telegram. */
 .quick-max {
   background: var(--surface);
   border: 1px solid var(--line2);
+  animation: quick-ping 2.6s 1.3s infinite;
   transition: border-color 0.3s;
 }
 .quick-max:hover,
