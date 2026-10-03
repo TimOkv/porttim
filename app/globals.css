@@ -838,6 +838,128 @@ main section {
   color: var(--mut);
 }
 
+/* Обо мне */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about .eyebrow {
+  color: var(--mut);
+}
+.about-name {
+  margin-top: 44px;
+  font-size: clamp(48px, 6.2vw, 92px);
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+}
+/* Фамилия второй строкой, с переливом от акцента к белому. */
+.about-name span {
+  display: block;
+  width: fit-content;
+  padding-right: 0.12em;
+  background: linear-gradient(95deg, #5b72ff 0%, #b49dff 45%, #fff 95%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.about-text p:not(.eyebrow) {
+  max-width: 580px;
+  margin-top: 34px;
+  font-size: 20px;
+  line-height: 1.7;
+  color: var(--mut);
+}
+.about-text p:not(.eyebrow) + p {
+  margin-top: 26px;
+}
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 40px;
+}
+.about-tags li {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid var(--line2);
+  color: var(--mut);
+  transition:
+    color 0.3s,
+    border-color 0.3s;
+}
+.about-tags li:hover {
+  color: #fff;
+  border-color: var(--acc);
+}
+.about-facts {
+  background: rgb(255 255 255 / 1.8%);
+  border: 1px solid var(--line);
+}
+.about-facts > li {
+  padding: 44px 40px 46px;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.45s;
+}
+.about-facts > li:last-child {
+  border: 0;
+}
+.about-facts > li:hover {
+  background: color-mix(in srgb, var(--c) 7%, transparent);
+}
+.about-facts strong {
+  display: block;
+  font-size: clamp(44px, 4.6vw, 66px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--c);
+  text-shadow: 0 0 44px color-mix(in srgb, var(--c) 55%, transparent);
+}
+.about-facts strong small {
+  font-size: 0.78em;
+}
+.about-facts b {
+  display: block;
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--mut);
+}
+.about-facts em {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: 14px;
+  color: var(--mut);
+}
+@media (max-width: 1100px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+@media (max-width: 760px) {
+  .about-text p:not(.eyebrow) {
+    font-size: 17px;
+  }
+  .about-facts > li {
+    padding: 30px 24px;
+  }
+  .about-facts b {
+    letter-spacing: 0.2em;
+  }
+}
+
 /* Контакт */
 .contact-section {
   text-align: center;

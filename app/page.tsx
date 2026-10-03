@@ -4,6 +4,7 @@ import { Services } from "@/components/services";
 import { Projects } from "@/components/projects";
 import { Why } from "@/components/why";
 import { Process } from "@/components/process";
+import { About } from "@/components/about";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
 import { RevealObserver } from "@/components/reveal-observer";
@@ -21,6 +22,7 @@ export default function Home() {
         <Projects />
         <Why />
         <Process />
+        <About />
         <Footer />
       </main>
       <RevealObserver />

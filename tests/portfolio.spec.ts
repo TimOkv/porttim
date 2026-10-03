@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { categories, projects } from "../data/projects";
+import { categories, projects, stack } from "../data/projects";
 
 const personalChat = "https://t.me/opskeeper";
 const personalMax =
@@ -392,4 +392,40 @@ test("process shows four steps: animated in order, at once with reduced motion",
   await page.locator("#process").scrollIntoViewIfNeeded();
   await page.locator(".process").scrollIntoViewIfNeeded();
   await expect.poll(opacities, { timeout: 8000 }).toEqual([1, 1, 1, 1]);
+});
+
+test("about section names the author, shows three facts and no job details", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const section = page.locator("#about");
+  await expect(section.locator("h2")).toHaveText(/Тим\s*Окунев/);
+  await expect(section.locator(".about-text p:not(.eyebrow)")).toHaveText([
+    "Разработчик сайтов, Telegram-ботов и автоматизации. Работаю в EdTech — в онлайн-школе программирования.",
+    "Не делаю «сайт ради сайта». Беру задачу бизнеса: заявки теряются, на одни и те же вопросы отвечают вручную, данные переносят руками. Собираю систему, которая делает это сама, — и отдаю готовой к работе.",
+  ]);
+  await expect(section.locator(".about-tags li")).toHaveText([
+    "Сайты",
+    "Telegram-боты",
+    "ИИ",
+    "Интеграции",
+    "Автоматизация",
+    "EdTech",
+  ]);
+  const tools = stack.reduce((sum, group) => sum + group.items.length, 0);
+  await expect(section.locator(".about-facts strong")).toHaveText([
+    "3",
+    String(tools),
+    /~1\s*час/,
+  ]);
+  await expect(section.locator(".about-facts li").first()).toContainText(
+    "ИИ-агент учебных карточек · веб-квест · лендинг для интенсива",
+  );
+  // Школа по названию, срок, должность и названия технологий на странице не встречаются.
+  const text = await page.locator("body").innerText();
+  expect(text).not.toMatch(/EasyCode|должност|молодой специалист|Next\.js|n8n/i);
+  // \b в JS не видит границ кириллических слов, поэтому границы заданы явно.
+  expect(await section.innerText()).not.toMatch(
+    /(?<![а-яё])(год|года|лет)(?![а-яё])/i,
+  );
 });
