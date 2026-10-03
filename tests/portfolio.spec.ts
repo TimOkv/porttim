@@ -361,3 +361,35 @@ test("case dialog scrolls on a low screen and keeps the Telegram button reachabl
   await link.scrollIntoViewIfNeeded();
   await expect(link).toBeInViewport();
 });
+
+test("process shows four steps: animated in order, at once with reduced motion", async ({
+  page,
+}) => {
+  const steps = page.locator(".process-step");
+  const opacities = () =>
+    steps.evaluateAll((nodes) =>
+      nodes.map((node) => Number(getComputedStyle(node).opacity)),
+    );
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(steps.locator("h3")).toHaveText([
+    "Вы пишете",
+    "Бриф",
+    "План",
+    "Готовый продукт",
+  ]);
+  expect(await opacities()).toEqual([1, 1, 1, 1]);
+  expect(
+    await page
+      .locator(".process-dot")
+      .first()
+      .evaluate((node) => getComputedStyle(node).animationName),
+  ).toBe("none");
+  // С движением плашки появляются по очереди, когда блок входит в окно просмотра.
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  expect((await opacities())[3]).toBe(0);
+  await page.locator("#process").scrollIntoViewIfNeeded();
+  await page.locator(".process").scrollIntoViewIfNeeded();
+  await expect.poll(opacities, { timeout: 8000 }).toEqual([1, 1, 1, 1]);
+});

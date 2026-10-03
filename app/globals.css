@@ -654,6 +654,190 @@ main section {
   }
 }
 
+/* Подход: цепочка из четырёх плашек. Класс .is-playing вешает RevealObserver. */
+.process {
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr 56px 1fr 56px 1fr;
+  align-items: stretch;
+}
+.process-step {
+  border: 1px solid var(--line2);
+  padding: 24px 22px 26px;
+  opacity: 0;
+  translate: 0 22px;
+  scale: 0.96;
+}
+.process-link {
+  align-self: center;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+.process-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--acc);
+  scale: 0 1;
+  transform-origin: left;
+}
+.process-dot {
+  position: absolute;
+  left: 0;
+  top: -5px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--acc);
+  box-shadow: 0 0 18px 4px var(--acc);
+  opacity: 0;
+}
+/* Шаг раз в секунду: плашка, затем линия и точка к следующей; после первого прохода точка ходит по кругу. */
+.process.is-playing .process-step {
+  animation:
+    step-in 0.6s var(--ease) calc(var(--i) * 1s) forwards,
+    step-flash 3s linear calc(4.4s + var(--i) * 1s) infinite;
+}
+.process.is-playing .process-link::before {
+  animation: link-fill 0.7s linear calc(var(--i) * 1s + 0.3s) forwards;
+}
+.process.is-playing .process-dot {
+  animation:
+    dot-first 0.7s linear calc(var(--i) * 1s + 0.3s),
+    dot-run 3s linear calc(4.4s + var(--i) * 1s) infinite;
+}
+@keyframes step-in {
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+@keyframes step-flash {
+  0%,
+  14%,
+  100% {
+    border-color: var(--line2);
+    box-shadow: none;
+  }
+  3% {
+    border-color: var(--acc);
+    box-shadow: 0 0 34px var(--glow);
+  }
+}
+@keyframes link-fill {
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes dot-first {
+  from {
+    left: 0;
+    opacity: 1;
+  }
+  to {
+    left: 100%;
+    opacity: 1;
+  }
+}
+@keyframes dot-run {
+  0% {
+    left: 0;
+    opacity: 1;
+  }
+  32% {
+    left: 100%;
+    opacity: 1;
+  }
+  33%,
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+@media (max-width: 760px) {
+  .process {
+    grid-template-columns: 1fr;
+  }
+  .process-link {
+    justify-self: start;
+    margin-left: 22px;
+    width: 1px;
+    height: 36px;
+  }
+  .process-link::before {
+    scale: 1 0;
+    transform-origin: top;
+  }
+  .process.is-playing .process-link::before {
+    animation-name: link-fill-y;
+  }
+  .process-dot {
+    left: -5px;
+    top: 0;
+    margin: -5px 0 0;
+  }
+  .process.is-playing .process-dot {
+    animation-name: dot-first-y, dot-run-y;
+  }
+}
+@keyframes link-fill-y {
+  to {
+    scale: 1 1;
+  }
+}
+@keyframes dot-first-y {
+  from {
+    top: 0;
+    opacity: 1;
+  }
+  to {
+    top: 100%;
+    opacity: 1;
+  }
+}
+@keyframes dot-run-y {
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  32% {
+    top: 100%;
+    opacity: 1;
+  }
+  33%,
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+.process-step small {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--acc);
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1px var(--acc);
+}
+.process-step h3 {
+  margin: 14px 0 8px;
+  font-size: 19px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.process-step p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--mut);
+}
+
 /* Контакт */
 .contact-section {
   text-align: center;
@@ -910,5 +1094,13 @@ main section {
   .reveal {
     opacity: 1;
     translate: none;
+  }
+  .process-step {
+    opacity: 1;
+    translate: none;
+    scale: 1;
+  }
+  .process-link::before {
+    scale: 1;
   }
 }
