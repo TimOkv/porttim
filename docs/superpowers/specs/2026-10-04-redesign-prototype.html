@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Живой прототип — версия 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #020408; --fg: #fff; --mut: rgba(255,255,255,.58); --line: rgba(255,255,255,.09); --line2: rgba(255,255,255,.2); --acc: #5B72FF; --glow: rgba(91,114,255,.3); --ease: cubic-bezier(.16,1,.3,1); }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body { background: var(--bg); color: var(--fg); font-family: 'Manrope', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  .w { width: min(1240px, 100% - 88px); margin-inline: auto; position: relative; z-index: 1; }
+  section { padding: 112px 0; position: relative; border-top: 1px solid var(--line); }
+  .eb { font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: var(--acc); font-weight: 800; }
+  .h { font-weight: 800; text-transform: uppercase; letter-spacing: -.045em; line-height: .94; font-size: clamp(36px, 5vw, 72px); margin-top: 20px; }
+  .ol { color: transparent; -webkit-text-stroke: 1px var(--acc); }
+  .mut { color: var(--mut); }
+  .bt { display: inline-flex; align-items: center; gap: 10px; font: inherit; font-size: 11px; font-weight: 800; padding: 19px 30px; border-radius: 2px; text-transform: uppercase; letter-spacing: .22em; background: var(--acc); color: #fff; border: 1px solid transparent; text-decoration: none; transition: translate .3s var(--ease), box-shadow .3s; }
+  .bt:hover { translate: 0 -3px; box-shadow: 0 14px 40px var(--glow); }
+  .bt.g { background: none; border-color: var(--line2); }
+  .rv { opacity: 0; translate: 0 34px; transition: opacity .9s var(--ease), translate .9s var(--ease); transition-delay: calc(var(--d, 0) * 80ms); }
+  .rv.in { opacity: 1; translate: 0 0; }
+
+  /* шапка */
+  .top { position: fixed; z-index: 40; inset: 0 0 auto 0; background: color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter: blur(18px); border-bottom: 1px solid var(--line); }
+  .top .bar { position: absolute; left: 0; top: 0; height: 2px; width: 100%; scale: var(--p, 0) 1; transform-origin: left; background: linear-gradient(90deg, #5B72FF, #B49DFF); }
+  .top .w { height: 84px; display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+  .logo { font-size: 19px; font-weight: 800; text-transform: uppercase; letter-spacing: -.02em; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 16px; }
+  .logo i { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 14px var(--acc); animation: blink 2.4s ease-in-out infinite; }
+  .logo span { color: rgba(255,255,255,.42); }
+  @keyframes blink { 50% { opacity: .35; } }
+  .top nav { display: flex; gap: 44px; }
+  .top nav a { font-size: 11px; font-weight: 700; letter-spacing: .34em; text-transform: uppercase; color: var(--mut); text-decoration: none; padding: 10px 0; position: relative; transition: color .3s; }
+  .top nav a::after { content: ""; position: absolute; left: 0; right: .34em; bottom: 2px; height: 1px; background: var(--acc); scale: 0 1; transform-origin: left; transition: scale .4s var(--ease); }
+  .top nav a:hover, .top nav a.cur { color: #fff; } .top nav a:hover::after, .top nav a.cur::after { scale: 1 1; }
+  .top .ask { font-size: 11px; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; color: #8FA2FF; text-decoration: none; padding: 17px 28px; border: 1px solid rgba(91,114,255,.45); transition: background .3s, color .3s; }
+  .top .ask:hover { background: var(--acc); color: #fff; }
+
+  /* курсор-прожектор */
+  @media (pointer: fine) { html, html * { cursor: none !important; } }
+  #cdot, #cspot { position: fixed; left: 0; top: 0; pointer-events: none; }
+  #cdot { z-index: 99; inset: 0 auto auto 0; margin: 0; padding: 0; border: 0; background: none; overflow: visible; width: 0; height: 0; } #cspot { z-index: 0; }
+  ::backdrop { cursor: none; }
+  #cdot i { display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--acc); translate: -50% -50%; box-shadow: 0 0 22px var(--acc); transition: scale .3s var(--ease), background .3s; }
+  .hov #cdot i { scale: 2.6; background: #fff; mix-blend-mode: difference; }
+  #cspot i { display: block; width: 620px; height: 620px; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, var(--glow), transparent 62%); }
+
+  /* 1 */
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 130px 0 60px; border: 0; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; width: 900px; height: 900px; right: -260px; top: -320px; background: radial-gradient(circle, var(--glow), transparent 62%); animation: orb 14s ease-in-out infinite alternate; }
+  @keyframes orb { to { translate: -120px 90px; scale: 1.15; } }
+  .hero-g { max-width: 720px; }
+  .hero .h { font-size: clamp(34px, 4.6vw, 66px); }
+  .hero .sub { font-size: 18px; line-height: 1.6; max-width: 600px; margin: 28px 0 34px; }
+  /* портрет вписан по высоте экрана целиком: пропорции 2:3, без обрезки по ширине */
+  .ph { position: absolute; z-index: 0; top: 84px; bottom: 0; right: max(0px, calc(50% - 660px)); aspect-ratio: 2 / 3; max-width: 52%; background: url(../../../public/portrait.jpg) center top / cover; opacity: .92;
+        -webkit-mask-image: radial-gradient(ellipse 50% 52% at 50% 46%, #000 30%, transparent 96%); mask-image: radial-gradient(ellipse 50% 52% at 50% 46%, #000 30%, transparent 96%); }
+  .ph.rv { translate: 0 0; scale: 1.06; transition: opacity 1.6s var(--ease), scale 2.4s var(--ease); } .ph.rv.in { scale: 1; opacity: .92; }
+  .nums { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 52px; border-top: 1px solid var(--line); }
+  .nums div { padding: 26px 16px 0 0; font-size: 13px; color: var(--mut); line-height: 1.45; }
+  .nums strong { display: block; font-size: clamp(34px, 4.4vw, 62px); font-weight: 800; letter-spacing: -.05em; color: var(--fg); line-height: 1.1; transform-origin: left bottom; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .nums strong small { font-size: .42em; letter-spacing: 0; font-weight: 700; color: var(--mut); margin-right: .25em; }
+
+  /* сетки-плашки */
+  .tiles { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 52px; }
+  .tiles > * { background: var(--bg); position: relative; overflow: hidden; transition: background .45s; }
+  .tint::before { content: ""; position: absolute; inset: 0; background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--t, var(--acc)) 34%, transparent), transparent 70%); opacity: 0; transition: opacity .45s; }
+  .tint::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--t, var(--acc)); scale: 0 1; transform-origin: left; transition: scale .5s var(--ease); }
+  .tint:hover { background: color-mix(in srgb, var(--t, var(--acc)) 9%, var(--bg)); }
+  .tint:hover::before { opacity: 1; } .tint:hover::after { scale: 1 1; }
+  .tint > * { position: relative; }
+
+  /* 2 услуги */
+  .serv { grid-template-columns: repeat(4, 1fr); }
+  .serv > div { padding: 32px 28px 36px; }
+  .serv svg { width: 34px; height: 34px; stroke: var(--acc); fill: none; stroke-width: 1.4; }
+  .serv h4 { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: -.02em; line-height: 1.05; margin: 22px 0 12px; }
+  .serv p { font-size: 15px; line-height: 1.55; color: var(--mut); }
+
+  /* 3 кейсы */
+  .chips { display: flex; gap: 8px; margin-top: 40px; flex-wrap: wrap; }
+  .chips button { font: inherit; font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; padding: 11px 16px; border: 1px solid var(--line2); background: none; color: var(--mut); transition: all .3s; }
+  .chips button.on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  .cases { grid-template-columns: repeat(3, 1fr); margin-top: 18px; }
+  .case { font: inherit; color: inherit; text-align: left; border: 0; padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .case .k { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--mut); font-weight: 700; display: flex; justify-content: space-between; }
+  .case .k i { font-style: normal; color: var(--acc); transition: translate .3s var(--ease); }
+  .case:hover .k i { translate: 4px -4px; }
+  .case h4 { font-size: 17px; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em; line-height: 1.12; }
+  .case dl { display: grid; grid-template-columns: 78px 1fr; gap: 8px 12px; font-size: 13.5px; line-height: 1.45; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+  .case dt { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); padding-top: 3px; }
+  .case dd { color: var(--mut); }
+  .case dd.r { color: var(--fg); font-weight: 700; }
+  .case dd.r b { color: var(--acc); }
+  dialog { margin: auto; width: min(620px, 100% - 32px); background: #06080f; color: var(--fg); border: 1px solid var(--line2); padding: 40px; box-shadow: 0 40px 120px #000; }
+  dialog::backdrop { background: rgba(2,4,8,.78); backdrop-filter: blur(10px); }
+  dialog[open] { animation: pop .5s var(--ease); }
+  @keyframes pop { from { opacity: 0; translate: 0 30px; scale: .97; } }
+  dialog h3 { font-size: 30px; text-transform: uppercase; letter-spacing: -.03em; line-height: 1; margin: 14px 0 22px; }
+  dialog .lbl { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--acc); font-weight: 800; margin: 20px 0 8px; }
+  dialog p { font-size: 15px; line-height: 1.6; color: var(--mut); }
+  dialog .res { font-size: 22px; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; color: var(--fg); }
+  dialog .draft { margin: 26px 0 16px; padding: 14px 16px; border: 1px dashed var(--line2); font-size: 13px; }
+  dialog .x { position: absolute; right: 14px; top: 14px; width: 38px; height: 38px; background: none; border: 1px solid var(--line2); color: var(--fg); font-size: 18px; }
+
+  /* 4 почему я */
+  .why { grid-template-columns: repeat(4, 1fr); }
+  .why > div { padding: 32px 28px 34px; }
+  .why em { font-style: normal; font-size: 11px; color: var(--t); font-weight: 800; letter-spacing: .22em; }
+  .why h4 { font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: -.02em; line-height: 1.05; margin: 20px 0 14px; }
+  .why p { font-size: 15px; line-height: 1.55; color: var(--mut); }
+
+  /* 5 процесс */
+  .pipe { display: grid; grid-template-columns: 1fr 56px 1fr 56px 1fr 56px 1fr; align-items: stretch; margin-top: 56px; }
+  .pipe .n { border: 1px solid var(--line2); padding: 24px 22px 26px; opacity: 0; translate: 0 22px; scale: .96; transition: opacity .6s var(--ease), translate .6s var(--ease), scale .6s var(--ease); }
+  .pipe .n.on { opacity: 1; translate: 0 0; scale: 1; }
+  .pipe .n small { display: block; font-size: 30px; font-weight: 800; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1px var(--acc); }
+  .pipe .n b { display: block; font-size: 19px; text-transform: uppercase; letter-spacing: -.02em; margin: 14px 0 8px; line-height: 1.1; }
+  .pipe .n span { font-size: 14px; color: var(--mut); line-height: 1.5; display: block; }
+  .pipe .ar { height: 1px; background: var(--line); position: relative; align-self: center; }
+  .pipe .ar .fill { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--acc); transition: width .7s linear; }
+  .pipe .ar .dot { position: absolute; left: 0; top: -5px; width: 11px; height: 11px; margin-left: -5px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 18px 4px var(--acc); opacity: 0; transition: left .7s linear, opacity .2s; }
+  .pipe .ar.on .fill { width: 100%; }
+  .pipe .ar.on .dot { left: 100%; opacity: 1; }
+  .pipe.done .ar .dot { transition: none; animation: run 3s linear infinite; animation-delay: calc(var(--i) * 1s); opacity: 0; }
+  .pipe.done .n { animation: flash 3s linear infinite; animation-delay: calc(var(--i) * 1s - .1s); }
+  @keyframes run { 0% { left: 0; opacity: 1; } 32% { left: 100%; opacity: 1; } 33%, 100% { left: 100%; opacity: 0; } }
+  @keyframes flash { 0%, 14%, 100% { border-color: var(--line2); box-shadow: none; } 3% { border-color: var(--acc); box-shadow: 0 0 34px var(--glow); } }
+
+  /* 6 обо мне */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about .eb { color: var(--mut); }
+  .name { font-size: clamp(48px, 6.2vw, 92px); font-weight: 800; font-style: italic; text-transform: uppercase; letter-spacing: -.05em; line-height: .9; margin-top: 44px; }
+  .name span { display: block; padding-right: .12em; background: linear-gradient(95deg, #5B72FF 0%, #B49DFF 45%, #fff 95%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .about p { font-size: 20px; line-height: 1.7; color: var(--mut); margin-top: 34px; max-width: 580px; }
+  .about p + p { margin-top: 26px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 40px; }
+  .tags span { font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; padding: 10px 16px; border: 1px solid var(--line2); color: var(--mut); transition: color .3s, border-color .3s; }
+  .tags span:hover { color: #fff; border-color: var(--acc); }
+  .facts { background: rgba(255,255,255,.018); border: 1px solid var(--line); }
+  .facts > div { padding: 44px 40px 46px; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; transition: background .45s; }
+  .facts > div:last-child { border: 0; }
+  .facts > div:hover { background: color-mix(in srgb, var(--c) 7%, transparent); }
+  .facts strong { display: block; font-size: clamp(44px, 4.6vw, 66px); font-weight: 800; letter-spacing: -.05em; line-height: 1; color: var(--c); text-shadow: 0 0 44px color-mix(in srgb, var(--c) 55%, transparent); }
+  .facts strong small { font-size: .78em; }
+  .facts b { display: block; margin-top: 16px; font-size: 12px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--mut); }
+  .facts em { display: block; margin-top: 10px; font-style: normal; font-size: 14px; color: var(--mut); opacity: .8; }
+
+  /* 7 контакт */
+  .cta { text-align: center; overflow: hidden; }
+  .cta .h { font-size: clamp(60px, 11vw, 170px); }
+  .cta p { font-size: 19px; max-width: 520px; margin: 30px auto 36px; line-height: 1.6; }
+
+  .tg { position: fixed; z-index: 50; right: 26px; bottom: 26px; height: 58px; min-width: 58px; display: flex; align-items: center; justify-content: flex-end; background: var(--acc); color: #fff; border-radius: 99px; text-decoration: none; box-shadow: 0 12px 36px var(--glow); overflow: hidden; }
+  .tg::before { content: ""; position: absolute; inset: 0; border-radius: 99px; animation: ping 2.6s infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 var(--acc); } 70%, 100% { box-shadow: 0 0 0 16px transparent; } }
+  .tg span { max-width: 0; overflow: hidden; white-space: nowrap; font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; transition: max-width .45s var(--ease), padding .45s var(--ease); }
+  .tg:hover span { max-width: 160px; padding-left: 22px; }
+  .tg svg { width: 58px; height: 26px; flex: 0 0 58px; fill: currentColor; }
+</style>
+</head>
+<body>
+<div id="cspot"><i></i></div><div id="cdot" popover="manual"><i></i></div>
+
+<header class="top"><div class="bar"></div><div class="w">
+  <a class="logo" href="#top">Тим<i></i><span>Окунев</span></a>
+  <nav><a href="#services">Услуги</a><a href="#cases">Кейсы</a><a href="#process">Подход</a><a href="#about">Обо мне</a></nav>
+  <a class="ask" data-tg="Здравствуйте! Пишу с вашего сайта. Хочу обсудить задачу.">Обсудить задачу</a>
+</div></header>
+
+<section class="hero" id="top">
+  <div class="ph rv"></div>
+  <div class="w">
+    <div class="hero-g">
+      <div>
+        <div class="eb rv">Сайты · Боты · Интеграции · Автоматизация</div>
+        <div class="h rv" style="--d:1">Сайт, бот<br>и автоматизация —<br><span class="ol">в одних руках</span></div>
+        <p class="sub mut rv" style="--d:2">Разрабатываю сайты, Telegram-ботов и связки между сервисами. Собираю из них целые системы автоматизации под задачи бизнеса. Сдаю то, чем уже можно пользоваться.</p>
+        <div class="rv" style="--d:3;display:flex;gap:14px"><a class="bt" data-tg="Здравствуйте! Посмотрел ваш сайт и хочу обсудить проект.">Написать в Telegram</a><a class="bt g" href="#cases">Смотреть кейсы</a></div>
+      </div>
+    </div>
+    <div class="nums">
+      <div><strong data-to="9">9</strong>готовых проектов</div>
+      <div><strong data-to="3">3</strong>направления: сайты, боты, автоматизация</div>
+      <div><strong data-to="80" data-p="до" data-s="%">до 80%</strong>рутины забирает автоматика</div>
+      <div><strong data-to="24" data-s="/7">24/7</strong>всё работает без вас</div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="w">
+    <div class="eb rv">Услуги</div>
+    <div class="h rv" style="--d:1">Что могу<br><span class="ol">сделать для вас</span></div>
+    <div class="tiles serv">
+      <div class="tint rv" style="--d:1"><svg viewBox="0 0 32 32"><rect x="3" y="6" width="26" height="20"/><path d="M3 12h26M8 9h1M12 9h1"/></svg><h4>Сайты</h4><p>Лендинги, многостраничные сайты, платформы. С приёмом заявок или без.</p></div>
+      <div class="tint rv" style="--d:2"><svg viewBox="0 0 32 32"><path d="M28 5 4 14l8 3 3 9 4-6 6 4 3-19ZM12 17l10-8"/></svg><h4>Боты</h4><p>Telegram-боты под любые задачи бизнеса.</p></div>
+      <div class="tint rv" style="--d:3"><svg viewBox="0 0 32 32"><circle cx="7" cy="16" r="4"/><circle cx="25" cy="8" r="4"/><circle cx="25" cy="24" r="4"/><path d="M11 14l10-5M11 18l10 5"/></svg><h4>Связки и интеграции</h4><p>Сервисы сами обмениваются данными. Настраиваю под ваш запрос.</p></div>
+      <div class="tint rv" style="--d:4"><svg viewBox="0 0 32 32"><rect x="4" y="4" width="10" height="10"/><rect x="18" y="4" width="10" height="10"/><rect x="4" y="18" width="10" height="10"/><rect x="18" y="18" width="10" height="10"/><path d="M14 9h4M14 23h4M9 14v4M23 14v4"/></svg><h4>Системы под ключ</h4><p>Сайт, бот и связки в одной системе, которая упрощает работу бизнеса.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="w">
+    <div class="eb rv">Кейсы</div>
+    <div class="h rv" style="--d:1">Что сделано<br><span class="ol">и что это дало</span></div>
+    <div class="chips rv" style="--d:2" id="chips"></div>
+    <div class="tiles cases" id="grid"></div>
+  </div>
+</section>
+
+<section>
+  <div class="w">
+    <div class="eb rv">Почему я</div>
+    <div class="h rv" style="--d:1">Четыре причины<br><span class="ol">написать мне</span></div>
+    <div class="tiles why">
+      <div class="tint rv" style="--d:1;--t:#5B72FF"><em>01</em><h4>Всё в одних руках</h4><p>Сайт, бот и связка между ними — один человек, а не три подрядчика.</p></div>
+      <div class="tint rv" style="--d:2;--t:#F5A430"><em>02</em><h4>ИИ по делу</h4><p>Ставлю нейросеть туда, где она снимает рутину, а не «чтобы было».</p></div>
+      <div class="tint rv" style="--d:3;--t:#B49DFF"><em>03</em><h4>Довожу до рабочего</h4><p>Сдаю не макет и не «почти готово», а то, чем уже пользуются.</p></div>
+      <div class="tint rv" style="--d:4;--t:#2FCB9B"><em>04</em><h4>Говорю по-человечески</h4><p>Без терминов: что сделаю, зачем это нужно и что вы получите.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="w">
+    <div class="eb rv">Как строится работа</div>
+    <div class="h rv" style="--d:1">От сообщения<br><span class="ol">до готового продукта</span></div>
+    <div class="pipe" id="pipe">
+      <div class="n" style="--i:0"><small>01</small><b>Вы пишете</b><span>Описываете задачу своими словами.</span></div><div class="ar" style="--i:0"><span class="fill"></span><span class="dot"></span></div>
+      <div class="n" style="--i:1"><small>02</small><b>Бриф</b><span>Изучаю вводные и задаю уточняющие вопросы.</span></div><div class="ar" style="--i:1"><span class="fill"></span><span class="dot"></span></div>
+      <div class="n" style="--i:2"><small>03</small><b>План</b><span>Обсуждаем решение, инструменты и порядок работы.</span></div><div class="ar" style="--i:2"><span class="fill"></span><span class="dot"></span></div>
+      <div class="n" style="--i:3"><small>04</small><b>Готовый продукт</b><span>Разработка, интеграции и передача того, чем уже можно пользоваться.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="w about">
+    <div>
+      <div class="eb rv">Обо мне</div>
+      <div class="name rv" style="--d:1">Тим<span>Окунев</span></div>
+      <p class="rv" style="--d:2">Разработчик сайтов, Telegram-ботов и автоматизации. Работаю в EdTech — в онлайн-школе программирования.</p>
+      <p class="rv" style="--d:3">Не делаю «сайт ради сайта». Беру задачу бизнеса: заявки теряются, на одни и те же вопросы отвечают вручную, данные переносят руками. Собираю систему, которая делает это сама, — и отдаю готовой к работе.</p>
+      <div class="tags rv" style="--d:4"><span>Сайты</span><span>Telegram-боты</span><span>ИИ</span><span>Интеграции</span><span>Автоматизация</span><span>EdTech</span></div>
+    </div>
+    <div class="facts rv" style="--d:2">
+      <div style="--c:#8FA2FF"><strong>3</strong><b>Своих продукта в онлайн-школе</b><em>ИИ-агент учебных карточек · веб-квест · лендинг для интенсива</em></div>
+      <div style="--c:#F5C26B"><strong>14</strong><b>Инструментов в работе</b><em>От сайта до нейросети — подбираю под задачу</em></div>
+      <div style="--c:#CDBFFF"><strong>~1 <small>час</small></strong><b>До ответа в Telegram</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="w">
+    <div class="eb rv">Напишите мне</div>
+    <div class="h rv" style="--d:1">Есть <span class="ol">задача?</span></div>
+    <p class="mut rv" style="--d:2">Расскажите в двух словах, что нужно. Отвечу в Telegram и предложу, как это сделать.</p>
+    <div class="rv" style="--d:3;display:flex;gap:14px;justify-content:center;flex-wrap:wrap"><a class="bt" data-tg="Здравствуйте! Есть задача, которую хочу обсудить.">Написать в Telegram</a><a class="bt g" href="https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o" target="_blank" rel="noopener noreferrer">Написать в MAX</a></div>
+  </div>
+</section>
+
+<a class="tg" data-tg="Здравствуйте! Пишу с вашего сайта. Хочу обсудить задачу." aria-label="Написать в Telegram"><span>Написать</span><svg viewBox="0 0 24 24"><path d="M21.4 3.6 2.9 10.7c-1 .4-.9 1.7.1 2l4.6 1.4 1.8 5.5c.2.8 1.2 1 1.7.4l2.6-2.5 4.5 3.3c.6.5 1.5.1 1.7-.6l3-15.4c.2-.9-.7-1.6-1.5-1.2ZM9.7 14.4l7.9-6.1-6.2 7.2-.3 3.1-1.4-4.2Z"/></svg></a>
+
+<dialog id="dlg">
+  <button class="x" id="dx" aria-label="Закрыть">×</button>
+  <div class="eb" id="dk"></div>
+  <h3 id="dt"></h3>
+  <div class="lbl">Что сделано</div><p id="dd"></p>
+  <div class="lbl">Что это дало</div><div class="res" id="dr"></div>
+  <p class="draft">В чате уже будет набран текст:<br><span style="color:#fff" id="dm"></span></p>
+  <a class="bt" id="dbtn">Написать в Telegram</a>
+</dialog>
+
+<script>
+  const root = document.documentElement, $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+  // ссылки в личный чат Telegram с готовым черновиком
+  const tg = text => 'https://t.me/opskeeper?text=' + encodeURIComponent(text);
+  const link = (a, text) => { a.href = tg(text); a.target = '_blank'; a.rel = 'noopener noreferrer'; };
+  $$('[data-tg]').forEach(a => link(a, a.dataset.tg));
+
+  // полоса прокрутки и текущий раздел в шапке
+  const navs = $$('.top nav a'), secs = navs.map(a => $(a.getAttribute('href')));
+  function head() {
+    $('.top .bar').style.setProperty('--p', scrollY / (document.documentElement.scrollHeight - innerHeight));
+    const i = secs.findLastIndex(s => s.getBoundingClientRect().top < innerHeight * .4);
+    navs.forEach((a, k) => a.classList.toggle('cur', k === i));
+  }
+  addEventListener('scroll', head, { passive: true });
+
+  // кейсы: что сделано → какой результат
+  const cats = ['Сайты', 'Боты и ИИ', 'Автоматизация'];
+  const cases = [
+    [0, 'Портал 1С-услуг', 'Многостраничный сайт с каталогом услуг и примерами внедрений.', 'Понятный путь от услуги до заявки'],
+    [0, 'Обучающий веб-квест', 'Игровой сценарий для учеников на платформе EasyLab.', 'Учатся через игру, а не сухую теорию'],
+    [0, 'Лендинг для интенсива', 'Страница интенсива онлайн-школы на платформе EasyLab.', 'Посетители регистрируются и приходят на интенсив'],
+    [0, 'Каталог стройматериалов', 'Каталог с быстрым расчётом, заявки сразу попадают в таблицу.', '<b>100%</b> заявок доходят без потерь'],
+    [1, 'ИИ-агент учебных карточек', 'Помощник на нейросети сам готовит карточки и задания.', 'У методистов в разы меньше рутины'],
+    [1, 'Школьный бот-помощник', 'Telegram-бот: расписание, звонки, меню и помощь с заданиями.', '<b>80%</b> типовых вопросов — без человека'],
+    [1, 'Бот сбора заявок', 'Бот принимает и сортирует заявки, заодно собирает данные с сайта.', 'Заявки и данные — в одном канале'],
+    [2, 'Сайт → таблица', 'Заявка с формы проверяется и сразу записывается в таблицу.', '<b>20+</b> заявок за считаные минуты'],
+    [2, 'Синхронизация сервисов', 'Сервисы сами обмениваются данными и шлют уведомления в чат.', 'Информация доходит без участия человека'],
+  ];
+  const grid = $('#grid'), chips = $('#chips'), dlg = $('#dlg');
+  function draw(f) {
+    grid.innerHTML = cases.map((c, i) => f < 0 || c[0] === f ? `<button class="case tint" data-i="${i}"><span class="k"><span>${String(i + 1).padStart(2, '0')} · ${cats[c[0]]}</span><i>↗</i></span><h4>${c[1]}</h4><dl><dt>Сделано</dt><dd>${c[2]}</dd><dt>Результат</dt><dd class="r">${c[3]}</dd></dl></button>` : '').join('');
+    chips.innerHTML = [['Все', -1, cases.length], ...cats.map((n, i) => [n, i, cases.filter(c => c[0] === i).length])].map(([n, v, k]) => `<button class="${v === f ? 'on' : ''}" data-f="${v}">${n} · ${k}</button>`).join('');
+  }
+  draw(-1);
+  chips.onclick = e => { const b = e.target.closest('button'); b && draw(+b.dataset.f); };
+  grid.onclick = e => {
+    const b = e.target.closest('.case'); if (!b) return; const c = cases[b.dataset.i];
+    $('#dk').textContent = `${String(+b.dataset.i + 1).padStart(2, '0')} · ${cats[c[0]]}`; $('#dt').textContent = c[1]; $('#dd').textContent = c[2]; $('#dr').innerHTML = c[3];
+    const msg = `Меня заинтересовал проект «${c[1]}», хочу сделать что-то подобное`;
+    $('#dm').textContent = `«${msg}»`; link($('#dbtn'), msg);
+    dlg.showModal(); onTop();
+  };
+  $('#dx').onclick = () => dlg.close();
+  dlg.onclick = e => e.target === dlg && dlg.close();
+
+  // прожектор за курсором
+  const dot = $('#cdot'), spot = $('#cspot');
+  // точка живёт в верхнем слое и после открытия окна поднимается над ним
+  function onTop() { try { dot.hidePopover(); } catch {} dot.showPopover(); }
+  onTop();
+  let mx = innerWidth / 2, my = innerHeight / 3, sx = mx, sy = my;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function loop() {
+    sx += (mx - sx) * .07; sy += (my - sy) * .07;
+    dot.style.transform = `translate(${mx}px,${my}px)`; spot.style.transform = `translate(${sx}px,${sy}px)`;
+    requestAnimationFrame(loop);
+  })();
+  document.addEventListener('mouseover', e => root.classList.toggle('hov', !!e.target.closest('a, button')));
+  document.addEventListener('mousemove', e => {
+    const c = e.target.closest('.tint'); if (!c) return; const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
+  });
+
+  // цифры: набегают при загрузке, растут в размере при прокрутке
+  const ns = $$('.nums strong'), t0 = performance.now();
+  const put = (n, v) => n.innerHTML = (n.dataset.p ? `<small>${n.dataset.p}</small>` : '') + v + (n.dataset.s || '');
+  (function count(t) {
+    const p = Math.min(1, (t - t0 - 500) / 1500), e = p < 0 ? 0 : 1 - Math.pow(1 - p, 3);
+    ns.forEach(n => put(n, Math.round(n.dataset.to * e)));
+    if (p < 1) requestAnimationFrame(count);
+  })(t0);
+  addEventListener('scroll', () => {
+    const p = Math.min(1, scrollY / (innerHeight * .45)), e = 1 - Math.pow(1 - p, 3);
+    ns.forEach(n => n.style.transform = `scale(${1 + .45 * e})`);
+  }, { passive: true });
+
+  // появление блоков
+  const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: .15 });
+  $$('.rv').forEach(el => io.observe(el));
+
+  // процесс: точка бежит, плашки появляются
+  const pipe = $('#pipe'), nodes = $$('.n', pipe), ars = $$('.ar', pipe);
+  new IntersectionObserver((es, o) => es.forEach(e => {
+    if (!e.isIntersecting) return; o.disconnect();
+    nodes.forEach((n, i) => { setTimeout(() => n.classList.add('on'), i * 1000); ars[i] && setTimeout(() => ars[i].classList.add('on'), i * 1000 + 300); });
+    setTimeout(() => pipe.classList.add('done'), nodes.length * 1000 + 400);
+  }), { threshold: .5 }).observe(pipe);
+</script>
+</body>
+</html>
