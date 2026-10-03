@@ -1,7 +1,7 @@
 window.STATE =
 {
   "slug": "portfolio-cases-refactor",
-  "dir": "2026-10-03-portfolio-cases-refactor--wip",
+  "dir": "2026-10-03-portfolio-cases-refactor",
   "title": "Портфолио PortTim: стек, опыт EasyCode и 9 кейсов",
   "mode": "interview",
   "depth": "deep",
@@ -11,8 +11,8 @@ window.STATE =
   "memoryFile": "AGENTS.md",
   "skillDir": "/Users/timofejokunev/.claude/skills/autopilot",
   "startedAt": "2026-10-03T22:04:51+03:00",
-  "updatedAt": "2026-10-03T23:03:25+03:00",
-  "finishedAt": null,
+  "updatedAt": "2026-10-03T23:13:20+03:00",
+  "finishedAt": "2026-10-03T23:13:20+03:00",
   "stages": [
     {
       "id": "preflight",
@@ -46,23 +46,28 @@ window.STATE =
     },
     {
       "id": "build",
-      "status": "active",
+      "status": "done",
       "startedAt": "2026-10-03T22:39:13+03:00",
-      "note": "1 из 2 тасков готовы"
+      "note": "2 из 2 тасков готовы",
+      "finishedAt": "2026-10-03T23:05:30+03:00"
     },
     {
       "id": "review",
-      "status": "active", "startedAt": "2026-10-03T22:52:32+03:00", "note": "проверено 1 из 2, идёт второй"
+      "status": "done",
+      "startedAt": "2026-10-03T22:52:32+03:00",
+      "note": "проверено 2 из 2",
+      "finishedAt": "2026-10-03T23:05:30+03:00"
     },
     {
       "id": "final",
-      "status": "pending"
+      "status": "active",
+      "startedAt": "2026-10-03T23:05:30+03:00"
     }
   ],
   "requirements": {
-    "total": 50,
-    "done": 34,
-    "inTicket": 16,
+    "total": 51,
+    "done": 51,
+    "inTicket": 0,
     "inSpec": 0,
     "placeholder": 0,
     "deferred": 0,
@@ -121,8 +126,22 @@ window.STATE =
       ],
       "status": "done",
       "finishedAt": "2026-10-03T22:55:53+03:00",
-      "files": ["data/projects.ts", "lib/telegram.ts", "components/projects.tsx", "components/contact-link.tsx", "components/header.tsx", "components/footer.tsx", "components/hero.tsx", "app/globals.css", "tests/portfolio.spec.ts", "components/project-preview.tsx (удалён)"],
-      "tests": { "passed": 28, "failed": 0 },
+      "files": [
+        "data/projects.ts",
+        "lib/telegram.ts",
+        "components/projects.tsx",
+        "components/contact-link.tsx",
+        "components/header.tsx",
+        "components/footer.tsx",
+        "components/hero.tsx",
+        "app/globals.css",
+        "tests/portfolio.spec.ts",
+        "components/project-preview.tsx (удалён)"
+      ],
+      "tests": {
+        "passed": 28,
+        "failed": 0
+      },
       "commit": "a27bb94",
       "concerns": [],
       "startedAt": "2026-10-03T22:39:13+03:00",
@@ -164,21 +183,41 @@ window.STATE =
         "tests/",
         "README.md"
       ],
-      "status": "review",
+      "status": "done",
+      "finishedAt": "2026-10-03T23:05:30+03:00",
+      "files": [
+        "components/about.tsx",
+        "data/projects.ts",
+        "components/tech-stack.tsx",
+        "app/page.tsx",
+        "app/globals.css",
+        "tests/portfolio.spec.ts",
+        "README.md"
+      ],
+      "tests": {
+        "passed": 36,
+        "failed": 0
+      },
+      "commit": "4ff57d4",
+      "concerns": [],
       "startedAt": "2026-10-03T22:55:53+03:00",
       "retries": 0,
-      "repairs": 0,
+      "repairs": 1,
+      "repairFindings": ["факт «EdTech — основная отрасль» заказчик о себе не говорил — заменить подпись на «практический опыт»"],
       "handoffs": 0
     }
   ],
   "singlePass": null,
-  "tests": { "passed": 28, "failed": 0 },
+  "tests": {
+    "passed": 36,
+    "failed": 0
+  },
   "debt": {
     "placeholders": [],
-    "assumptions": [],
+    "assumptions": ["Формулировка про EasyLab с косой чертой разделена по кейсам: квест — «интерактивный сценарий», вебинарный лендинг — «контентный модуль»", "Выделенный результат у семи кейсов без числа написан мной — коротким пересказом твоей «Ценности», без новых утверждений", "Заголовок «Молодой специалист. Опыт — на реальных задачах.» и среднее предложение второго абзаца «Обо мне» написаны мной по твоему поручению", "Заголовки секции кейсов заменены на прямые: «Кейсы. Что сделано и что это дало.»", "Стили меню в шапке поправлены на узких телефонах: четвёртый пункт «Обо мне» иначе не помещался"],
     "emptyEnv": []
   },
-  "additions": [],
+  "additions": ["Кнопка «Посмотреть проект» в окне кейса — появится, когда кейсу будет вписана ссылка (ради списка кейсов, R16)", "Кнопка связи внутри блока «Обо мне» (ради блока о себе, R10)", "Факты «3 направления» и «EdTech — практический опыт» в ряду фактов (ради блока о себе, R10)", "Пояснения под цифрами полосы — из какого кейса каждая (ради согласованности цифр с кейсами, R38i)", "Кнопка фильтра не показывается у категории без кейсов (ради фильтров, R30)", "Число кейсов и направлений считается из данных — в полосе цифр, фактах и фильтре (ради структуры данных, R04)"],
   "coverage": {
     "missing": 2,
     "half": 7,
@@ -192,17 +231,35 @@ window.STATE =
     "tests/portfolio.spec.ts:155 — с таблицей содержания целиком сверен только кейс 01 (и 06 в окне); у остальных формат, ценность и теги литералами не проверены",
     "tests/portfolio.spec.ts:253 — тексты «Все проекты» и «проектов» взяты из данных, а не записаны литералами",
     "tests/portfolio.spec.ts:310 — собраны три кадра, утверждается только последний",
-    "tests/portfolio.spec.ts:136 — один тест на 110 строк с несколькими причинами упасть",
+    "снято, дело вкуса: tests/portfolio.spec.ts:136 — один тест на 110 строк с несколькими причинами упасть",
     "components/footer.tsx:52 — плавающая кнопка повторяет выбор «ссылка или якорь» из contact-link.tsx",
     "components/contact-link.tsx:28 — тип { title: string } записан заново при экспортируемом ContactProject",
     "components/projects.tsx:216 — щелчок по промежутку между кнопками в окне кейса тоже закрывает окно",
     "app/globals.css:1179 — правило двух колонок сетки и кегль тегов заданы дважды",
-    "app/globals.css:632 — класс .bento-grid называет теперь ровную сетку",
-    "components/hero.tsx:55 — на первом экране изменён один атрибут: кнопке передана точка входа source=\"hero\" (видимое не менялось)"
+    "снято, дело вкуса: app/globals.css:632 — класс .bento-grid называет теперь ровную сетку",
+    "components/hero.tsx:55 — на первом экране изменён один атрибут: кнопке передана точка входа source=\"hero\" (видимое не менялось)",
+    "data/projects.ts:282 — выражение «категории, в которых есть кейс» существует в трёх местах (данные, компонент кейсов, тест)",
+    "data/projects.ts:308 — подписи «направления» и «реализованных кейсов» вписаны одной грамматической формой при считаемом числе",
+    "data/projects.ts:312 — подпись кнопки связи в блоке «Обо мне» повторяет общую подпись кнопки",
+    "tests/portfolio.spec.ts:590 — «числа в фактах считаются из данных» на этом шве не отличимо от вписанных чисел",
+    "tests/portfolio.spec.ts — ветка «пустая группа стека не рисуется» не покрыта",
+    "tests/portfolio.spec.ts — тест меню на телефонах не проверяет выход пунктов за шапку и наезд на бренд",
+    "tests/portfolio.spec.ts — неизменность первого экрана проверена в тесте меню и без подписей портрета",
+    "tests/portfolio.spec.ts — счётчик чипов стека повторяет уже закреплённые литералами списки",
+    "app/globals.css:1566 — правила меню дописаны в конец файла, одно значение зазора перекрыто и мертво",
+    "app/globals.css:817 — рамки ряда фактов рассчитаны ровно на четыре факта",
+    "снято, дело вкуса: app/globals.css:881 — вид чипа стека почти повторяет вид тега кейса",
+    "app/globals.css:1230 — одна колонка сетки стека задана дважды",
+    "data/projects.ts:42 — описание сайта для поисковиков оставлено прежним: новому профилю не противоречит"
   ],
   "reviewers": {
     "manifestSpec": "reviewer-ms",
     "craft": "reviewer-craft"
   },
-  "blind": null
+  "blind": {
+    "agreed": 50,
+    "drift": 1,
+    "fixed": 1,
+    "note": "Слепая приёмка: проект поднимается, основной сценарий проходит. Одно расхождение — факт «EdTech — основная отрасль» в блоке «Обо мне» заказчик о себе не говорил; исправлено и подтверждено повторным ревью."
+  }
 }
