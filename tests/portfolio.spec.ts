@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { categories, copy, projects } from "../data/projects";
+import { categories, copy, projects, stack } from "../data/projects";
 
 // Ожидаемое содержание — строки из спецификации, а не из модуля данных:
 // название кейса, его фильтр и подкатегория.
@@ -81,6 +81,7 @@ test("every contact link opens the personal Telegram chat with its own draft", a
       page.locator("#contact").getByRole("link", contact),
       "Здравствуйте! Есть идея, которую хочу реализовать. Давайте обсудим.",
     ],
+    [page.locator("#about").getByRole("link", contact), generalDraft],
     [page.locator(".quick-contact"), generalDraft],
   ] as const) {
     await expect(link).toHaveAttribute("target", "_blank");
@@ -92,7 +93,7 @@ test("every contact link opens the personal Telegram chat with its own draft", a
   const links = await page
     .locator('a[href*="t.me"]')
     .evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!));
-  expect(links.length).toBeGreaterThanOrEqual(4);
+  expect(links.length).toBeGreaterThanOrEqual(5);
   for (const href of links) {
     const url = new URL(href);
     expect(url.origin + url.pathname).toBe(personalChat);
@@ -470,7 +471,7 @@ test("case dialog shows the business value and a Telegram draft naming the case"
   ).toHaveCount(linked ? 1 : 0);
 });
 
-test("reduced motion keeps final metrics and chips remain interactive", async ({
+test("reduced motion keeps final metrics and stops decorative animation", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -504,10 +505,231 @@ test("reduced motion keeps final metrics and chips remain interactive", async ({
       .first()
       .evaluate((element) => getComputedStyle(element).animationName),
   ).toBe("none");
-  await page.getByRole("button", { name: "Python & API" }).click();
-  await expect(page.locator("#stack-detail")).toContainText(
-    "Оркестрация сервисов",
+});
+
+test("menu matches the sections and section numbers run in order", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  // Первый экран не тронут: подпись под именем и заголовок героя прежние.
+  await expect(page.locator(".site-header .brand small")).toHaveText(
+    "AI & Fullstack Developer",
   );
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    /^Превращаю идеи\s*в цифровые\s*возможности\.$/,
+  );
+  // Пункты меню и номера надзаголовков — из спецификации.
+  const nav = page.getByRole("navigation", { name: "Навигация" });
+  await expect(nav.getByRole("link")).toHaveText([
+    "Проекты",
+    "Метрики",
+    "Обо мне",
+    "Стек",
+  ]);
+  for (const [id, eyebrow] of [
+    ["projects", "01 / РЕАЛИЗОВАННЫЕ КЕЙСЫ"],
+    ["about", "02 / ОБО МНЕ"],
+    ["stack", "03 / ИНСТРУМЕНТЫ"],
+    ["contact", "04 / ДАВАЙТЕ СОЗДАДИМ ЧТО-ТО КЛАССНОЕ"],
+  ] as const)
+    await expect(page.locator(`#${id} .eyebrow`).first()).toHaveText(eyebrow);
+  await nav.getByRole("link", { name: "Обо мне" }).click();
+  await expect(page.locator("#about h2")).toBeInViewport();
+});
+
+test("menu items and the brand caption stay on one line on phones", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  // Четвёртый пункт меню не должен ломать шапку: ни переноса «Обо мне», ни переноса подписи под именем.
+  const wrapped = () =>
+    page
+      .locator(".site-header nav a, .site-header .brand small")
+      .evaluateAll((nodes) =>
+        nodes
+          .filter((node) => {
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            const lines = [...range.getClientRects()].map((rect) =>
+              Math.round(rect.top),
+            );
+            return new Set(lines).size > 1;
+          })
+          .map((node) => node.textContent),
+      );
+  for (const width of [320, 344, 360, 375, 390, 414]) {
+    await page.setViewportSize({ width, height: 800 });
+    await expect.poll(wrapped, { message: `ширина ${width}` }).toEqual([]);
+  }
+});
+
+test("about section presents the author after the cases", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const section = page.locator("#about");
+  // Секция стоит между кейсами и стеком.
+  expect(
+    await page
+      .locator("#projects, #about, #stack, #contact")
+      .evaluateAll((nodes) => nodes.map((node) => node.id)),
+  ).toEqual(["projects", "about", "stack", "contact"]);
+  // Тексты — из раздела «Блок «Обо мне»» спецификации; первый абзац — дословно из задачи.
+  await expect(section.locator("h2")).toHaveText(
+    /^Молодой специалист\.\s*Опыт — на реальных задачах\.$/,
+  );
+  const paragraphs = section.locator("p:not(.eyebrow)");
+  await expect(paragraphs).toHaveText([
+    "Практический опыт работы в онлайн-школе программирования EasyCode: техническое сопровождение платформы, разработка интерактивных обучающих решений и интеграция AI-инструментов для автоматизации образовательного процесса.",
+    "В EasyCode я год. Я в начале пути и говорю об этом прямо: беру задачи, на которых расту, и довожу их до работающего результата. Помимо основной работы стараюсь встраивать в школу продукты и решения, которые работают на удержание.",
+  ]);
+  // Число кейсов и направлений считается из данных, подписи — из спецификации.
+  const facts = section.getByRole("listitem");
+  await expect(facts).toHaveText([
+    /^1 год\s*в EasyCode$/,
+    new RegExp(`^${projects.length}\\s*реализованных кейсов$`),
+    new RegExp(
+      `^${usedCategories.length}\\s*направления: Web, AI & Bots, Automation$`,
+    ),
+    /^EdTech\s*основная отрасль$/,
+  ]);
+  // Кнопка секции открывает личный чат с общим черновиком.
+  const cta = section.getByRole("link", { name: "Написать в Telegram" });
+  await expect(cta).toHaveAttribute("target", "_blank");
+  const url = new URL((await cta.getAttribute("href"))!);
+  expect(url.origin + url.pathname).toBe(personalChat);
+  expect(url.searchParams.get("text")).toBe(generalDraft);
+  // Ни должности, ни самоуничижения на странице нет.
+  await expect(page.locator("body")).not.toContainText(
+    /технический специалист|тех\.?\s*специалист|junior|начинающ|не профи/i,
+  );
+  // На телефоне блок читается в одну колонку: факты под текстом, не больше двух в ряд.
+  await page.setViewportSize({ width: 320, height: 900 });
+  const boxes = (nodes: Element[]) =>
+    nodes.map((node) => {
+      const rect = node.getBoundingClientRect();
+      return {
+        left: Math.round(rect.left),
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+        clipped: node.scrollWidth > node.clientWidth,
+      };
+    });
+  await expect
+    .poll(async () => {
+      const text = await paragraphs.evaluateAll(boxes);
+      const row = await facts.evaluateAll(boxes);
+      return Math.max(...text.map((box) => box.bottom)) <= row[0].top;
+    })
+    .toBe(true);
+  const row = await facts.evaluateAll(boxes);
+  expect(new Set(row.map((box) => box.left)).size).toBeLessThanOrEqual(2);
+  for (const box of row) {
+    expect(box.clipped).toBe(false);
+    expect(box.left).toBeGreaterThanOrEqual(0);
+    expect(box.right).toBeLessThanOrEqual(320);
+  }
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
+});
+
+// Группы стека — из таблицы «Стек» спецификации: заголовок, строка о пользе, технологии.
+const specStack = [
+  [
+    "Frontend & UI",
+    "Интерфейсы, которые быстро загружаются и ведут посетителя к заявке.",
+    ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+  ],
+  [
+    "Backend & Automation",
+    "Связываю сервисы между собой, чтобы данные доходили без ручной работы.",
+    ["Python", "n8n", "Docker", "REST APIs", "Webhooks"],
+  ],
+  [
+    "AI & Integrations",
+    "Встраиваю нейросети в рабочие процессы и в Telegram.",
+    ["LLM Orchestration", "Prompt Engineering", "AI Agents", "Telegram Bot API"],
+  ],
+] as const;
+
+test("stack shows three static groups with every technology visible", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const section = page.locator("#stack");
+  const groups = section.locator(".stack-group");
+  const chips = section.getByRole("listitem");
+  await expect(groups.locator("h3")).toHaveText(
+    specStack.map(([name]) => name),
+  );
+  for (const [index, [name, detail, items]] of specStack.entries()) {
+    const group = groups.nth(index);
+    await expect(
+      group.getByRole("heading", { name, exact: true }),
+    ).toBeVisible();
+    await expect(group.locator("p")).toHaveText(detail);
+    await expect(group.getByRole("listitem")).toHaveText([...items]);
+  }
+  // Число чипов равно числу строк в данных: технология добавляется одной строкой.
+  await expect(chips).toHaveCount(
+    stack.reduce((total, group) => total + group.items.length, 0),
+  );
+  // Секция статична: нажимать нечего, пояснения по щелчку нет.
+  await expect(
+    section.locator(
+      "button, a, input, select, textarea, [tabindex], [role='button']",
+    ),
+  ).toHaveCount(0);
+  await expect(page.locator("#stack-detail")).toHaveCount(0);
+  const body = page.locator("body");
+  for (const gone of [
+    "Claude",
+    "Next.js & TypeScript",
+    "Python & API",
+    "n8n & Docker",
+    "Tailwind & Motion",
+    "Оркестрация сервисов",
+  ])
+    await expect(body).not.toContainText(gone);
+  // Три карточки рядом на широком экране, друг под другом на телефоне.
+  const columns = async () =>
+    new Set(
+      await groups.evaluateAll((nodes) =>
+        nodes.map((node) => Math.round(node.getBoundingClientRect().left)),
+      ),
+    ).size;
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect.poll(columns).toBe(3);
+  await page.setViewportSize({ width: 320, height: 900 });
+  await expect.poll(columns).toBe(1);
+  // Ни один чип не обрезан и не выходит за экран.
+  expect(
+    await chips.evaluateAll((nodes) =>
+      nodes.every((node) => {
+        const rect = node.getBoundingClientRect();
+        return (
+          node.scrollWidth <= node.clientWidth &&
+          rect.left >= 0 &&
+          rect.right <= document.documentElement.clientWidth
+        );
+      }),
+    ),
+  ).toBe(true);
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth <=
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
 });
 
 test("page and project dialog pass WCAG AA checks", async ({ page }) => {

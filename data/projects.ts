@@ -19,6 +19,13 @@ export type Project = {
   // Публичная ссылка: с ней в окне кейса появляется кнопка «Посмотреть проект».
   url?: string;
 };
+export type StackGroup = {
+  icon: "layers" | "workflow" | "sparkles";
+  name: string;
+  // Одна строка о пользе для бизнеса под заголовком группы.
+  detail: string;
+  items: string[];
+};
 
 export const profile = {
   name: process.env.NEXT_PUBLIC_PROFILE_NAME || "TimA",
@@ -45,6 +52,7 @@ export const copy = {
   nav: [
     { label: "Проекты", href: "#projects" },
     { label: "Метрики", href: "#metrics" },
+    { label: "Обо мне", href: "#about" },
     { label: "Стек", href: "#stack" },
   ],
   status: "Открыт к проектам",
@@ -83,14 +91,14 @@ export const copy = {
     view: "Посмотреть проект",
   },
   stack: {
-    eyebrow: "02 / ИНСТРУМЕНТЫ",
+    eyebrow: "03 / ИНСТРУМЕНТЫ",
     title: "Правильный стек.",
     accent: "Сильный результат.",
     description:
       "Подбираю технологии под задачу. Соединяю их в одну работающую систему.",
   },
   contactSection: {
-    eyebrow: "03 / ДАВАЙТЕ СОЗДАДИМ ЧТО-ТО КЛАССНОЕ",
+    eyebrow: "04 / ДАВАЙТЕ СОЗДАДИМ ЧТО-ТО КЛАССНОЕ",
     title: "Ваша следующая",
     accent: "большая идея?",
     description:
@@ -270,36 +278,66 @@ export const metrics = [
   },
 ];
 
-export const stack = [
+// Направления — категории, в которых есть хотя бы один кейс (те же, что дают кнопки фильтра).
+const directions = categories.filter((category) =>
+  projects.some((project) => project.category === category),
+);
+
+// Тексты блока «Обо мне» окончательные и согласованы с владельцем: первый абзац — его фраза дословно.
+// Должность в EasyCode не называется нигде. Числа кейсов и направлений считаются из данных.
+export const about: {
+  eyebrow: string;
+  title: string;
+  accent: string;
+  paragraphs: string[];
+  facts: { value: string; label: string }[];
+  cta: string;
+} = {
+  eyebrow: "02 / ОБО МНЕ",
+  title: "Молодой специалист.",
+  accent: "Опыт — на реальных задачах.",
+  paragraphs: [
+    "Практический опыт работы в онлайн-школе программирования EasyCode: техническое сопровождение платформы, разработка интерактивных обучающих решений и интеграция AI-инструментов для автоматизации образовательного процесса.",
+    "В EasyCode я год. Я в начале пути и говорю об этом прямо: беру задачи, на которых расту, и довожу их до работающего результата. Помимо основной работы стараюсь встраивать в школу продукты и решения, которые работают на удержание.",
+  ],
+  facts: [
+    { value: "1 год", label: "в EasyCode" },
+    { value: String(projects.length), label: "реализованных кейсов" },
+    {
+      value: String(directions.length),
+      label: `направления: ${directions.join(", ")}`,
+    },
+    { value: "EdTech", label: "основная отрасль" },
+  ],
+  cta: "Написать в Telegram",
+};
+
+// Три группы стека: все технологии видны сразу. Новая технология — одна строка в items.
+// Группа с пустым items на странице не рисуется.
+export const stack: StackGroup[] = [
   {
-    icon: "sparkles",
-    name: "Claude & LLM",
-    label: "Интеллект",
-    detail: "AI-агенты, интеграция языковых моделей и работа с контекстом.",
-  },
-  {
-    icon: "code",
-    name: "Next.js & TypeScript",
-    label: "Основа",
+    icon: "layers",
+    name: "Frontend & UI",
     detail:
-      "Быстрые веб-интерфейсы, типизированная логика и серверный рендеринг.",
-  },
-  {
-    icon: "braces",
-    name: "Python & API",
-    label: "Логика",
-    detail: "Оркестрация сервисов, обработка данных и интеграции.",
+      "Интерфейсы, которые быстро загружаются и ведут посетителя к заявке.",
+    items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"],
   },
   {
     icon: "workflow",
-    name: "n8n & Docker",
-    label: "Автоматизация",
-    detail: "Связанные процессы и воспроизводимый запуск приложений.",
+    name: "Backend & Automation",
+    detail:
+      "Связываю сервисы между собой, чтобы данные доходили без ручной работы.",
+    items: ["Python", "n8n", "Docker", "REST APIs", "Webhooks"],
   },
   {
-    icon: "layers",
-    name: "Tailwind & Motion",
-    label: "Впечатление",
-    detail: "Адаптивные интерфейсы, плавная анимация и внимание к деталям.",
+    icon: "sparkles",
+    name: "AI & Integrations",
+    detail: "Встраиваю нейросети в рабочие процессы и в Telegram.",
+    items: [
+      "LLM Orchestration",
+      "Prompt Engineering",
+      "AI Agents",
+      "Telegram Bot API",
+    ],
   },
-] as const;
+];

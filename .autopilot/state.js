@@ -11,7 +11,7 @@ window.STATE =
   "memoryFile": "AGENTS.md",
   "skillDir": "/Users/timofejokunev/.claude/skills/autopilot",
   "startedAt": "2026-10-03T22:04:51+03:00",
-  "updatedAt": "2026-10-03T22:52:32+03:00",
+  "updatedAt": "2026-10-03T23:03:25+03:00",
   "finishedAt": null,
   "stages": [
     {
@@ -48,11 +48,11 @@ window.STATE =
       "id": "build",
       "status": "active",
       "startedAt": "2026-10-03T22:39:13+03:00",
-      "note": "0 из 2 тасков готовы"
+      "note": "1 из 2 тасков готовы"
     },
     {
       "id": "review",
-      "status": "active", "startedAt": "2026-10-03T22:52:32+03:00", "note": "проверяется 1 из 2"
+      "status": "active", "startedAt": "2026-10-03T22:52:32+03:00", "note": "проверено 1 из 2, идёт второй"
     },
     {
       "id": "final",
@@ -61,8 +61,8 @@ window.STATE =
   ],
   "requirements": {
     "total": 50,
-    "done": 2,
-    "inTicket": 48,
+    "done": 34,
+    "inTicket": 16,
     "inSpec": 0,
     "placeholder": 0,
     "deferred": 0,
@@ -119,7 +119,12 @@ window.STATE =
         "app/globals.css",
         "tests/"
       ],
-      "status": "review",
+      "status": "done",
+      "finishedAt": "2026-10-03T22:55:53+03:00",
+      "files": ["data/projects.ts", "lib/telegram.ts", "components/projects.tsx", "components/contact-link.tsx", "components/header.tsx", "components/footer.tsx", "components/hero.tsx", "app/globals.css", "tests/portfolio.spec.ts", "components/project-preview.tsx (удалён)"],
+      "tests": { "passed": 28, "failed": 0 },
+      "commit": "a27bb94",
+      "concerns": [],
       "startedAt": "2026-10-03T22:39:13+03:00",
       "retries": 0,
       "repairs": 0,
@@ -159,14 +164,15 @@ window.STATE =
         "tests/",
         "README.md"
       ],
-      "status": "pending",
+      "status": "review",
+      "startedAt": "2026-10-03T22:55:53+03:00",
       "retries": 0,
       "repairs": 0,
       "handoffs": 0
     }
   ],
   "singlePass": null,
-  "tests": null,
+  "tests": { "passed": 28, "failed": 0 },
   "debt": {
     "placeholders": [],
     "assumptions": [],
@@ -179,7 +185,21 @@ window.STATE =
     "extra": 0,
     "note": "Независимая сверка брифа и спецификации: 2 пропуска (число цифр у кейсов, запрет на имена клиентов) и 7 половин (образец, границы схемы данных, EasyLab против фразы про EasyCode, деление формулировки EasyLab, глубокий анализ, тексты черновиков, метрика кейса) — все дописаны в спецификацию. Из лишнего: домысленные «по своей инициативе» и «учеников» убраны из текста «Обо мне»; остальное — проработка требований, привязанная к ним."
   },
-  "concerns": [],
+  "concerns": [
+    "tests/portfolio.spec.ts:25 — набор кнопок фильтра выводится тем же выражением, что в компоненте: тест не упадёт, если пустая категория перестанет отсекаться",
+    "tests/portfolio.spec.ts:467 — ветка «ссылка задана → кнопка „Посмотреть проект“» не проверена: ссылки нет ни у одного кейса",
+    "tests/portfolio.spec.ts — ветка «некорректное имя аккаунта → якорь на контактный блок» не покрыта автотестом (проверена исполнителем вручную отдельной сборкой)",
+    "tests/portfolio.spec.ts:155 — с таблицей содержания целиком сверен только кейс 01 (и 06 в окне); у остальных формат, ценность и теги литералами не проверены",
+    "tests/portfolio.spec.ts:253 — тексты «Все проекты» и «проектов» взяты из данных, а не записаны литералами",
+    "tests/portfolio.spec.ts:310 — собраны три кадра, утверждается только последний",
+    "tests/portfolio.spec.ts:136 — один тест на 110 строк с несколькими причинами упасть",
+    "components/footer.tsx:52 — плавающая кнопка повторяет выбор «ссылка или якорь» из contact-link.tsx",
+    "components/contact-link.tsx:28 — тип { title: string } записан заново при экспортируемом ContactProject",
+    "components/projects.tsx:216 — щелчок по промежутку между кнопками в окне кейса тоже закрывает окно",
+    "app/globals.css:1179 — правило двух колонок сетки и кегль тегов заданы дважды",
+    "app/globals.css:632 — класс .bento-grid называет теперь ровную сетку",
+    "components/hero.tsx:55 — на первом экране изменён один атрибут: кнопке передана точка входа source=\"hero\" (видимое не менялось)"
+  ],
   "reviewers": {
     "manifestSpec": "reviewer-ms",
     "craft": "reviewer-craft"

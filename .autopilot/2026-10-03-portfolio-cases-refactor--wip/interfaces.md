@@ -95,3 +95,15 @@ export const about: {
   `.dialog-format`, `.dialog-actions`. Сетка кейсов: 3 колонки, 2 — до 1100 px, 1 — на телефоне.
 - Тесты: 14 тестов × 2 профиля в `tests/portfolio.spec.ts`; ожидаемые количества берутся из данных.
   Тест чипа стека «Python & API» пока проверяет прежний стек — его заменяет таск 02.
+
+## Из таска 02 — блок «Обо мне», стек, меню
+
+- `export type StackGroup = { icon: "layers" | "workflow" | "sparkles"; name: string; detail: string; items: string[] }`;
+  `export const stack: StackGroup[]` — три группы.
+- `export const about: { eyebrow; title; accent; paragraphs: string[]; facts: { value: string; label: string }[]; cta }`;
+  число кейсов и направлений в `facts` считаются из данных.
+- `About()` — секция `#about` между кейсами и стеком; `TechStack()` — серверный компонент без состояния.
+- `copy.nav` — четыре пункта: «Проекты», «Метрики», «Обо мне» → `#about`, «Стек».
+- CSS-классы: `.about-section`, `.about-grid`, `.about-text`, `.about-facts`, `.about-cta`, `.stack-group`,
+  `.stack-items`; удалены `.stack-chip`, `.stack-detail`. Меню в шапке на телефонах не переносится.
+- Тесты: 18 тестов × 2 профиля.

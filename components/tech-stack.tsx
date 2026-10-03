@@ -1,24 +1,13 @@
-"use client";
-import { useState } from "react";
-import {
-  Braces,
-  Code2,
-  Layers,
-  Sparkles,
-  Workflow,
-  ArrowUpRight,
-} from "lucide-react";
-import { copy, stack } from "@/data/projects";
-import { cn } from "@/lib/utils";
-const icons = {
-  sparkles: Sparkles,
-  code: Code2,
-  braces: Braces,
-  workflow: Workflow,
+import { Layers, Sparkles, Workflow } from "lucide-react";
+import { copy, stack, type StackGroup } from "@/data/projects";
+const icons: Record<StackGroup["icon"], typeof Layers> = {
   layers: Layers,
+  workflow: Workflow,
+  sparkles: Sparkles,
 };
 export function TechStack() {
-  const [active, setActive] = useState(0);
+  // Пустая группа не рисуется: карточка без технологий — это заголовок ни о чём.
+  const groups = stack.filter((group) => group.items.length > 0);
   return (
     <section
       id="stack"
@@ -36,31 +25,23 @@ export function TechStack() {
         </div>
         <p className="section-description">{copy.stack.description}</p>
       </div>
-      <div className="stack-grid" role="group" aria-label={copy.stack.title}>
-        {stack.map((item, index) => {
-          const Icon = icons[item.icon];
+      <div className="stack-grid">
+        {groups.map((group) => {
+          const Icon = icons[group.icon];
           return (
-            <button
-              key={item.name}
-              className={cn("stack-chip glass", active === index && "selected")}
-              onClick={() => setActive(index)}
-              aria-pressed={active === index}
-              aria-controls="stack-detail"
-            >
-              <div>
-                <Icon size={25} strokeWidth={1.5} />
-                <ArrowUpRight size={14} />
-              </div>
-              <span>{item.name}</span>
-              <small>{item.label}</small>
-            </button>
+            <article key={group.name} className="stack-group glass">
+              <Icon size={25} strokeWidth={1.5} aria-hidden="true" />
+              <h3>{group.name}</h3>
+              <p>{group.detail}</p>
+              <ul className="stack-items">
+                {group.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
           );
         })}
       </div>
-      <p className="stack-detail" id="stack-detail" role="status">
-        <span className="status-dot" />
-        {stack[active].detail}
-      </p>
     </section>
   );
 }
