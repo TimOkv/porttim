@@ -1025,7 +1025,9 @@ main section {
   align-items: center;
   gap: 12px;
 }
-.quick-contact {
+/* Обе кнопки устроены одинаково: круг со значком, при наведении раскрывается подпись. */
+.quick-contact,
+.quick-max {
   height: 58px;
   min-width: 58px;
   display: flex;
@@ -1033,11 +1035,24 @@ main section {
   justify-content: flex-end;
   overflow: hidden;
   border-radius: 99px;
-  background: var(--acc-fill);
   color: #fff;
+}
+.quick-contact {
+  background: var(--acc-fill);
   animation: quick-ping 2.6s infinite;
 }
-.quick-contact span {
+/* MAX — второй канал: тёмная кнопка с обводкой, значок с переливом. */
+.quick-max {
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  transition: border-color 0.3s;
+}
+.quick-max:hover,
+.quick-max:focus-visible {
+  border-color: var(--acc);
+}
+.quick-contact span,
+.quick-max span {
   max-width: 0;
   overflow: hidden;
   white-space: nowrap;
@@ -1050,32 +1065,21 @@ main section {
     padding 0.45s var(--ease);
 }
 .quick-contact:hover span,
-.quick-contact:focus-visible span {
+.quick-contact:focus-visible span,
+.quick-max:hover span,
+.quick-max:focus-visible span {
   max-width: 160px;
   padding-left: 22px;
 }
-.quick-contact svg {
+.quick-contact svg,
+.quick-max svg {
   flex: none;
+}
+.quick-contact svg {
   margin: 0 18px 0 17px;
 }
-.quick-max {
-  width: 58px;
-  height: 58px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--line2);
-  border-radius: 50%;
-  background: var(--surface);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  transition:
-    border-color 0.3s,
-    translate 0.3s var(--ease);
-}
-.quick-max:hover {
-  border-color: var(--acc);
-  translate: 0 -3px;
+.quick-max svg {
+  margin: 0 16px;
 }
 
 /* Курсор-прожектор: классы has-cursor и cursor-hover на html вешает components/cursor.tsx. */
@@ -1291,11 +1295,11 @@ main section {
     height: 50px;
     min-width: 50px;
   }
-  .quick-max {
-    width: 50px;
-  }
   .quick-contact svg {
     margin: 0 14px 0 13px;
+  }
+  .quick-max svg {
+    margin: 0 12px;
   }
 }
 

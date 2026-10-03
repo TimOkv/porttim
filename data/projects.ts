@@ -46,7 +46,6 @@ export const copy = {
   contact: "Написать в Telegram",
   contactMax: "Написать в MAX",
   quickContact: "Написать",
-  quickMax: "MAX",
   hero: {
     eyebrow: "Сайты · Боты · Интеграции · Автоматизация",
     title: ["Сайт, бот", "и автоматизация —"],

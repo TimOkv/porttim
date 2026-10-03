@@ -6,6 +6,7 @@ import {
   categories,
   categoryLabels,
   copy,
+  profile,
   projects,
   type Category,
   type Project,
@@ -72,7 +73,11 @@ export function Projects() {
           <br />
           <span className="stroke-text">{copy.projects.accent}</span>
         </h2>
-        <div className="filters" role="group" aria-label={copy.projects.filterLabel}>
+        <div
+          className="filters"
+          role="group"
+          aria-label={copy.projects.filterLabel}
+        >
           {filters.map((item) => (
             <button
               key={item}
@@ -188,6 +193,16 @@ export function Projects() {
             )}
             <div className="dialog-actions" onClick={() => setSelected(null)}>
               <ContactLink project={selected} />
+              {profile.max && (
+                <a
+                  className="button-ghost"
+                  href={profile.max}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {copy.contactMax}
+                </a>
+              )}
               {/* Появится, когда владелец впишет кейсу публичную ссылку. */}
               {selected.url && (
                 <a

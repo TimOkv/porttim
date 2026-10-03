@@ -2,6 +2,7 @@ import { ArrowUp, Send } from "lucide-react";
 import { copy, profile } from "@/data/projects";
 import { delay } from "@/lib/utils";
 import { ContactLink } from "./contact-link";
+import { MaxIcon } from "./max-icon";
 export function Footer() {
   return (
     <>
@@ -56,7 +57,8 @@ export function Footer() {
             className="quick-max"
             aria-label={copy.contactMax}
           >
-            {copy.quickMax}
+            <span>{copy.quickContact}</span>
+            <MaxIcon gradient />
           </a>
         )}
         <a

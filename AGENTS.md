@@ -41,6 +41,7 @@ components/header.tsx         шапка: имя, меню, полоса про�
 components/hero.tsx           первый экран; hero-portrait.tsx — портрет-фон, hero-numbers.tsx — четыре цифры
 components/projects.tsx       сетка кейсов, фильтр по category, окно кейса на <dialog>
 components/                   остальные секции по файлу: services, why, process, about, footer (в нём же #contact и плавающие кнопки Telegram и MAX)
+components/max-icon.tsx       значок MAX в линейном стиле сайта: MaxIcon({ size?, gradient? })
 components/reveal-observer.tsx  вешает .is-visible блокам .reveal и .is-playing цепочке .process при входе в окно просмотра
 components/cursor.tsx         курсор-прожектор: только для мыши и без prefers-reduced-motion
 components/ui/                набор на утилитах Tailwind; страницей не импортируется

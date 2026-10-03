@@ -89,6 +89,19 @@ test("every contact link opens the personal Telegram chat with its own draft", a
     await expect(link).toHaveAttribute("href", personalMax);
     await expect(link).toHaveAttribute("target", "_blank");
   }
+  // Плавающая кнопка MAX устроена как кнопка Telegram: значок и подпись, которая раскрывается при наведении.
+  const quickMax = page.locator(".quick-max");
+  await expect(quickMax).toHaveAccessibleName("Написать в MAX");
+  await expect(quickMax.locator("svg")).toHaveCount(1);
+  const label = quickMax.locator("span");
+  await expect(label).toHaveText("Написать");
+  const labelWidth = () =>
+    label.evaluate((node) => node.getBoundingClientRect().width);
+  expect(await labelWidth()).toBe(0);
+  if (!isMobile()) {
+    await quickMax.hover();
+    await expect.poll(labelWidth).toBeGreaterThan(40);
+  }
   // Других адресов Telegram на странице нет, и ни один черновик не пуст.
   const links = await page
     .locator('a[href*="t.me"]')
@@ -394,6 +407,10 @@ test("case dialog shows the details, the result and a Telegram draft naming the 
   const url = new URL((await link.getAttribute("href"))!);
   expect(url.origin + url.pathname).toBe(personalChat);
   expect(url.searchParams.get("text")).toBe(draft);
+  // Рядом — кнопка второго канала, без черновика.
+  const maxLink = dialog.getByRole("link", { name: "Написать в MAX" });
+  await expect(maxLink).toHaveAttribute("href", personalMax);
+  await expect(maxLink).toHaveAttribute("target", "_blank");
   // Публичной ссылки у кейса нет — нет и кнопки просмотра.
   await expect(
     dialog.getByRole("link", { name: "Посмотреть проект" }),
