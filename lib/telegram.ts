@@ -1,19 +1,15 @@
 /** Предзаполненный текст сообщения для каждой точки входа — по нему видно, откуда пришел лид. */
 const contactMessages = {
-  default: "Здравствуйте! Пишу с вашего сайта-портфолио. Хочу обсудить проект.",
-  header: "Здравствуйте! Пишу с вашего сайта-портфолио. Хочу обсудить сотрудничество.",
-  hero: "Здравствуйте! Посмотрел ваше портфолио и хочу обсудить проект.",
-  footer: "Здравствуйте! Есть идея, которую хочу реализовать. Давайте обсудим.",
+  default: "Здравствуйте! Пишу с вашего сайта. Хочу обсудить задачу.",
+  header: "Здравствуйте! Увидел ваш сайт. Хочу обсудить задачу.",
+  hero: "Здравствуйте! Посмотрел ваш сайт и хочу обсудить проект.",
+  footer: "Здравствуйте! Есть задача, которую хочу обсудить.",
 } as const;
 
 export type ContactSource = keyof typeof contactMessages;
 
 export interface ContactProject {
   title: string;
-}
-
-function projectContactMessage(projectTitle: string): string {
-  return `Здравствуйте! Заинтересовал кейс «${projectTitle}» в вашем портфолио. Хочу обсудить похожий проект.`;
 }
 
 const USERNAME_PATTERN = /^[a-z][a-z0-9_]{4,31}$/i;
@@ -43,6 +39,11 @@ export function getContactLink(source: ContactSource = "default"): string | null
   return buildTelegramLink(contactMessages[source]);
 }
 
+/** Текст черновика по кейсу: его же показывает окно кейса перед кнопкой. */
+export function getProjectDraft(project: ContactProject): string {
+  return `Меня заинтересовал проект «${project.title}», хочу сделать что-то подобное`;
+}
+
 export function getProjectContactLink(project: ContactProject): string | null {
-  return buildTelegramLink(projectContactMessage(project.title));
+  return buildTelegramLink(getProjectDraft(project));
 }

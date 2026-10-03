@@ -1,4 +1,3 @@
-import { ArrowUpRight, Send } from "lucide-react";
 import { copy } from "@/data/projects";
 import {
   getContactLink,
@@ -15,6 +14,7 @@ export function ContactLink({
 }: {
   children?: React.ReactNode;
   className?: string;
+  // Контурная кнопка шапки.
   compact?: boolean;
   // Точка входа: от неё зависит текст черновика.
   source?: ContactSource;
@@ -32,13 +32,11 @@ export function ContactLink({
       rel={telegram ? "noopener noreferrer" : undefined}
       className={cn(
         "contact-link",
-        compact ? "contact-compact" : "button-primary",
+        compact ? "header-cta" : "button-primary",
         className,
       )}
     >
-      <Send size={compact ? 15 : 17} strokeWidth={1.7} aria-hidden="true" />
-      <span>{children || copy.contact}</span>
-      <ArrowUpRight size={17} aria-hidden="true" />
+      {children || copy.contact}
     </a>
   );
 }

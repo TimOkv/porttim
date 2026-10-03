@@ -1,11 +1,8 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
-import { Metrics } from "@/components/metrics";
-import { Projects } from "@/components/projects";
-import { About } from "@/components/about";
-import { TechStack } from "@/components/tech-stack";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
+import { RevealObserver } from "@/components/reveal-observer";
 import { copy } from "@/data/projects";
 export default function Home() {
   return (
@@ -16,12 +13,9 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
-        <Metrics />
-        <Projects />
-        <About />
-        <TechStack />
         <Footer />
       </main>
+      <RevealObserver />
     </MotionProvider>
   );
 }
