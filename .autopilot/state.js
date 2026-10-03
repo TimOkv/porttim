@@ -60,8 +60,10 @@ window.STATE =
     },
     {
       "id": "final",
-      "status": "active",
-      "startedAt": "2026-10-03T23:05:30+03:00"
+      "status": "done",
+      "startedAt": "2026-10-03T23:05:30+03:00",
+      "finishedAt": "2026-10-03T23:13:20+03:00",
+      "note": "слепая приёмка: 1 расхождение, исправлено"
     }
   ],
   "requirements": {
