@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
 import { Services } from "@/components/services";
+import { Projects } from "@/components/projects";
 import { Why } from "@/components/why";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
@@ -16,6 +17,7 @@ export default function Home() {
       <main id="main">
         <Hero />
         <Services />
+        <Projects />
         <Why />
         <Footer />
       </main>

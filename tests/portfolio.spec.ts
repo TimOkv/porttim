@@ -202,3 +202,162 @@ test("services and reasons show the agreed copy", async ({ page }) => {
     );
   expect(new Set(tints).size).toBe(4);
 });
+
+// Ожидаемое содержание — строки из описания дизайна: название, подпись категории, результат.
+const specCases = [
+  ["Портал 1С-услуг", "Сайты", "Понятный путь от услуги до заявки"],
+  ["Обучающий веб-квест", "Сайты", "Учатся через игру, а не сухую теорию"],
+  ["Лендинг для интенсива", "Сайты", "Посетители регистрируются и приходят на интенсив"],
+  ["Каталог стройматериалов", "Сайты", "100% заявок доходят без потерь"],
+  ["ИИ-агент учебных карточек", "Боты и ИИ", "У методистов в разы меньше рутины"],
+  ["Школьный бот-помощник", "Боты и ИИ", "80% типовых вопросов — без человека"],
+  ["Бот сбора заявок", "Боты и ИИ", "Заявки и данные — в одном канале"],
+  ["Сайт → таблица", "Автоматизация", "20+ заявок за считаные минуты"],
+  ["Синхронизация сервисов", "Автоматизация", "Информация доходит без участия человека"],
+] as const;
+
+test("shows the nine cases in order with what was done and the result", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const cards = page.locator(".case-card");
+  await expect(cards).toHaveCount(projects.length);
+  for (const [index, [title, label, result]] of specCases.entries()) {
+    const card = cards.nth(index);
+    await expect(card.locator("h3")).toHaveText(title);
+    await expect(card.locator(".case-kicker")).toContainText(
+      `${String(index + 1).padStart(2, "0")} · ${label}`,
+    );
+    await expect(card.locator(".case-done")).toHaveText(projects[index].done);
+    await expect(card.locator(".case-result")).toHaveText(result);
+  }
+  // Формат и технические теги с карточек ушли.
+  await expect(page.locator("#projects")).not.toContainText("Next.js");
+});
+
+test("filters show only categories with cases and the right counts", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const group = page.getByRole("group", { name: "Фильтр кейсов" });
+  const used = categories.filter((category) =>
+    projects.some((project) => project.category === category),
+  );
+  await expect(group.getByRole("button")).toHaveCount(used.length + 1);
+  const labels = { Web: "Сайты", "AI & Bots": "Боты и ИИ", Automation: "Автоматизация" };
+  for (const category of used) {
+    const count = projects.filter((project) => project.category === category).length;
+    const button = group.getByRole("button", { name: `${labels[category]} · ${count}` });
+    await button.click();
+    await expect(button).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator(".case-card")).toHaveCount(count);
+    await expect(page.locator("#projects [role=status]")).toHaveText(
+      `Показано кейсов: ${count}`,
+    );
+  }
+  await group.getByRole("button", { name: `Все · ${projects.length}` }).click();
+  await expect(page.locator(".case-card")).toHaveCount(projects.length);
+});
+
+test("case grid is even: three, two and one column with equal rows", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  for (const [width, columns] of [
+    [1440, 3],
+    [900, 2],
+    [390, 1],
+  ] as const) {
+    await page.setViewportSize({ width, height: 900 });
+    const boxes = await page
+      .locator(".case-card")
+      .evaluateAll((nodes) =>
+        nodes.map((node) => {
+          const { top, height } = node.getBoundingClientRect();
+          return { top: Math.round(top), height: Math.round(height) };
+        }),
+      );
+    const firstRow = boxes.filter((box) => box.top === boxes[0].top);
+    expect(firstRow.length).toBe(columns);
+    expect(new Set(firstRow.map((box) => box.height)).size).toBe(1);
+  }
+});
+
+test("case dialog supports keyboard dismissal and restores focus", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const trigger = page.getByRole("button", {
+    name: `Открыть кейс: ${specCases[0][0]}`,
+  });
+  const dialog = page.getByRole("dialog");
+  const close = dialog.getByRole("button", { name: "Закрыть" });
+  const pageScroll = () => page.evaluate(() => document.body.style.overflow);
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.focus();
+  await trigger.press("Enter");
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByRole("heading", { name: specCases[0][0], exact: true }),
+  ).toBeVisible();
+  await expect(close).toBeFocused();
+  expect(await pageScroll()).toBe("hidden");
+  // Сколько бы ни нажимали Tab, фокус остаётся внутри окна.
+  for (let step = 0; step < 4; step += 1) {
+    await page.keyboard.press("Tab");
+    expect(
+      await page.evaluate(() => !!document.activeElement?.closest("dialog")),
+    ).toBe(true);
+  }
+  await page.keyboard.press("Escape");
+  await expect(dialog).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+  expect(await pageScroll()).toBe("");
+  await trigger.click();
+  await close.click();
+  await expect(dialog).not.toBeVisible();
+  // Щелчок мимо окна тоже закрывает его.
+  await trigger.click();
+  await expect(dialog).toBeVisible();
+  await page.mouse.click(4, 4);
+  await expect(dialog).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+});
+
+test("case dialog shows the details, the result and a Telegram draft naming the case", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Открыть кейс: Сайт → таблица" }).click();
+  const dialog = page.getByRole("dialog");
+  const draft =
+    "Меня заинтересовал проект «Сайт → таблица», хочу сделать что-то подобное";
+  await expect(dialog.locator(".eyebrow")).toHaveText("08 · Автоматизация");
+  await expect(dialog).toContainText(
+    "Менеджерам не нужно копировать контакты руками.",
+  );
+  await expect(dialog.locator(".dialog-result")).toHaveText(
+    "20+ заявок за считаные минуты",
+  );
+  await expect(dialog.locator(".dialog-draft")).toContainText(draft);
+  const link = dialog.getByRole("link", { name: "Написать в Telegram" });
+  const url = new URL((await link.getAttribute("href"))!);
+  expect(url.origin + url.pathname).toBe(personalChat);
+  expect(url.searchParams.get("text")).toBe(draft);
+  // Публичной ссылки у кейса нет — нет и кнопки просмотра.
+  await expect(dialog.getByRole("link", { name: "Посмотреть проект" })).toHaveCount(0);
+});
+
+test("case dialog scrolls on a low screen and keeps the Telegram button reachable", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 700, height: 360 });
+  await page.goto("/");
+  await page.locator(".case-card").first().click();
+  const link = page
+    .getByRole("dialog")
+    .getByRole("link", { name: "Написать в Telegram" });
+  await link.scrollIntoViewIfNeeded();
+  await expect(link).toBeInViewport();
+});
