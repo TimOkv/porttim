@@ -8,14 +8,11 @@ import { cn } from "@/lib/utils";
 export function ContactLink({
   children,
   className,
-  compact = false,
   source,
   project,
 }: {
   children?: React.ReactNode;
   className?: string;
-  // Контурная кнопка шапки.
-  compact?: boolean;
   // Точка входа: от неё зависит текст черновика.
   source?: ContactSource;
   // Кейс, о котором пишут: черновик называет его; важнее точки входа.
@@ -30,11 +27,7 @@ export function ContactLink({
       href={telegram || "#contact"}
       target={telegram ? "_blank" : undefined}
       rel={telegram ? "noopener noreferrer" : undefined}
-      className={cn(
-        "contact-link",
-        compact ? "header-cta" : "button-primary",
-        className,
-      )}
+      className={cn("contact-link", "button-primary", className)}
     >
       {children || copy.contact}
     </a>

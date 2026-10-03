@@ -36,7 +36,7 @@ app/tg/[[...slug]]/route.ts   GET /tg и /tg/<id кейса> → 307 в Telegram
 data/projects.ts              всё содержание и тексты: profile, copy, categories, categoryLabels, projects, heroNumbers, services, why, processSteps, stack, stackCount, about; типы Category, Project
 lib/telegram.ts               имя аккаунта и черновики: telegramUsername, getContactLink(source?), getProjectContactLink({ title }), getProjectDraft({ title }); без имени — null
 lib/max.ts                    ссылка на профиль в MAX: maxLink; невалидное значение — null
-components/contact-link.tsx   ContactLink({ children?, className?, compact?, source?, project? }) — кнопка связи в Telegram; при null ведёт на #contact
+components/contact-link.tsx   ContactLink({ children?, className?, source?, project? }) — кнопка связи в Telegram; при null ведёт на #contact
 components/header.tsx         шапка: имя, меню, полоса прогресса; на телефоне меню открывается кнопкой
 components/hero.tsx           первый экран; hero-portrait.tsx — портрет-фон, hero-numbers.tsx — четыре цифры
 components/projects.tsx       сетка кейсов, фильтр по category, окно кейса на <dialog>

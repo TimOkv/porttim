@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { copy, profile } from "@/data/projects";
-import { ContactLink } from "./contact-link";
 export function Header() {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState("");
@@ -100,14 +99,7 @@ export function Header() {
               {item.label}
             </a>
           ))}
-          {/* На телефоне кнопка связи живёт внутри раскрытого меню. */}
-          <ContactLink compact source="header" className="nav-cta">
-            {copy.headerCta}
-          </ContactLink>
         </nav>
-        <ContactLink compact source="header">
-          {copy.headerCta}
-        </ContactLink>
       </div>
     </header>
   );

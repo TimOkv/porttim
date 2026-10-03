@@ -42,7 +42,6 @@ export const copy = {
     { label: "Подход", href: "#process" },
     { label: "Обо мне", href: "#about" },
   ],
-  headerCta: "Обсудить задачу",
   contact: "Написать в Telegram",
   contactMax: "Написать в MAX",
   quickContact: "Написать",

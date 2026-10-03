@@ -60,10 +60,6 @@ test("every contact link opens the personal Telegram chat with its own draft", a
   await page.goto("/");
   for (const [link, draft] of [
     [
-      page.locator(".site-header .contact-link").first(),
-      "Здравствуйте! Увидел ваш сайт. Хочу обсудить задачу.",
-    ],
-    [
       page.locator(".hero .contact-link"),
       "Здравствуйте! Посмотрел ваш сайт и хочу обсудить проект.",
     ],
@@ -109,7 +105,10 @@ test("every contact link opens the personal Telegram chat with its own draft", a
   const links = await page
     .locator('a[href*="t.me"]')
     .evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")!));
-  expect(links.length).toBeGreaterThanOrEqual(4);
+  expect(links.length).toBeGreaterThanOrEqual(3);
+  // В шапке кнопки связи нет: только имя и разделы.
+  await expect(page.locator(".site-header a[href*='t.me']")).toHaveCount(0);
+  await expect(page.getByText("Обсудить задачу")).toHaveCount(0);
   for (const href of links) {
     const url = new URL(href);
     expect(url.origin + url.pathname).toBe(personalChat);
@@ -181,9 +180,6 @@ test("phone menu opens with the button, closes on Escape and after choosing a se
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeHidden();
   await open.click();
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeVisible();
-  await expect(
-    nav.getByRole("link", { name: "Обсудить задачу" }),
-  ).toBeVisible();
   // Панель закрывает страницу во всю ширину, фокус уходит в меню, страница под ним неактивна.
   const width = page.viewportSize()!.width;
   const box = (await nav.boundingBox())!;
@@ -545,8 +541,9 @@ test("spotlight cursor exists only for a fine pointer and stays above the case d
   const dot = page.locator(".cursor-dot");
   const open = () => dot.evaluate((node) => node.matches(":popover-open"));
   expect(await open()).toBe(true);
-  // На кнопке точка раскрывается в кольцо: сплошной диск закрывал бы надпись.
-  await page.locator(".hero .button-ghost").hover();
+  // На ссылке точка раскрывается в кольцо: сплошной диск закрывал бы надпись.
+  // Наводим на пункт меню: он неподвижен, а кнопки первого экрана в первые мгновения ещё всплывают.
+  await page.locator(".site-nav a").first().hover();
   await expect(html).toHaveClass(/cursor-hover/);
   await expect
     .poll(() =>
@@ -626,7 +623,7 @@ test("layout fits narrow phones, tablets and large monitors, also after scrollin
     await expect.poll(() => overflow(page)).toBeLessThanOrEqual(0);
     // Шапка закреплена и в ширину страницы не входит: её правый край проверяем отдельно.
     const right = await page
-      .locator(".header-inner > .header-cta, .menu-toggle")
+      .locator(".site-header .brand, .site-nav, .menu-toggle")
       .evaluateAll((nodes) =>
         Math.max(...nodes.map((node) => node.getBoundingClientRect().right)),
       );
