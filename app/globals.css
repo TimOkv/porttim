@@ -398,6 +398,68 @@ main section {
 .tile > * {
   position: relative;
 }
+/* Плашка, которая ещё и появляется: подсветка не ждёт очереди появления. */
+.tile.reveal {
+  transition:
+    opacity 0.9s var(--ease),
+    translate 0.9s var(--ease),
+    background 0.45s;
+  transition-delay: calc(var(--d, 0) * 80ms), calc(var(--d, 0) * 80ms), 0s;
+}
+
+/* Услуги и «Почему я» */
+.services-grid,
+.why-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+.services-grid .tile {
+  padding: 32px 28px 36px;
+}
+.why-grid .tile {
+  padding: 32px 28px 34px;
+}
+.services-grid svg {
+  color: var(--acc);
+}
+.services-grid h3,
+.why-grid h3 {
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.services-grid h3 {
+  margin: 22px 0 12px;
+}
+.why-grid h3 {
+  margin: 20px 0 14px;
+}
+.services-grid p,
+.why-grid p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--mut);
+}
+.why-grid em {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--t);
+}
+@media (max-width: 1100px) {
+  .services-grid,
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .services-grid,
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* Контакт */
 .contact-section {

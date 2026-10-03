@@ -1,5 +1,7 @@
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
+import { Services } from "@/components/services";
+import { Why } from "@/components/why";
 import { Footer } from "@/components/footer";
 import { MotionProvider } from "@/components/motion-provider";
 import { RevealObserver } from "@/components/reveal-observer";
@@ -13,6 +15,8 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
+        <Services />
+        <Why />
         <Footer />
       </main>
       <RevealObserver />

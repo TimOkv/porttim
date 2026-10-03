@@ -170,3 +170,35 @@ test("phone menu opens with the button, closes on Escape and after choosing a se
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeHidden();
   expect(await page.evaluate(() => document.body.style.overflow)).toBe("");
 });
+
+test("services and reasons show the agreed copy", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("#services h2")).toHaveText(
+    /Что могу\s*сделать для вас/,
+  );
+  await expect(page.locator("#services .tile h3")).toHaveText([
+    "Сайты",
+    "Боты",
+    "Связки и интеграции",
+    "Системы под ключ",
+  ]);
+  await expect(page.locator("#services .tile p").nth(3)).toHaveText(
+    "Сайт, бот и связки в одной системе, которая упрощает работу бизнеса.",
+  );
+  await expect(page.locator("#why h2")).toHaveText(
+    /Четыре причины\s*написать мне/,
+  );
+  await expect(page.locator("#why .tile h3")).toHaveText([
+    "Всё в одних руках",
+    "ИИ по делу",
+    "Довожу до рабочего",
+    "Говорю по-человечески",
+  ]);
+  // У каждой причины свой оттенок подсветки.
+  const tints = await page
+    .locator("#why .tile")
+    .evaluateAll((nodes) =>
+      nodes.map((node) => getComputedStyle(node).getPropertyValue("--t").trim()),
+    );
+  expect(new Set(tints).size).toBe(4);
+});
