@@ -9,18 +9,18 @@ export function Hero() {
       <HeroPortrait src={profile.portrait} alt={copy.hero.portraitAlt} />
       <div className="container">
         <div className="hero-copy">
-          <p className="eyebrow reveal">{copy.hero.eyebrow}</p>
-          <h1 id="hero-title" className="display reveal" style={delay(1)}>
+          <p className="eyebrow hero-in">{copy.hero.eyebrow}</p>
+          <h1 id="hero-title" className="display hero-in" style={delay(1)}>
             {copy.hero.title[0]}
             <br />
             {copy.hero.title[1]}
             <br />
             <span className="stroke-text">{copy.hero.accent}</span>
           </h1>
-          <p className="hero-description reveal" style={delay(2)}>
+          <p className="hero-description hero-in" style={delay(2)}>
             {copy.hero.description}
           </p>
-          <div className="hero-actions reveal" style={delay(3)}>
+          <div className="hero-actions hero-in" style={delay(3)}>
             <ContactLink source="hero">{copy.hero.primary}</ContactLink>
             <a className="button-ghost" href="#projects">
               {copy.hero.secondary}

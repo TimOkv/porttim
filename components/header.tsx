@@ -27,16 +27,28 @@ export function Header() {
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
+    const main = document.querySelector("main");
+    // Пока меню открыто, страница под ним не прокручивается и не получает фокус.
     document.body.style.overflow = "hidden";
+    main?.setAttribute("inert", "");
+    document.querySelector<HTMLElement>("#site-nav a")?.focus();
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setOpen(false);
       toggle.current?.focus();
     };
+    // Окно стало широким (поворот телефона): кнопки меню там нет, закрываем сами.
+    const wide = matchMedia("(min-width: 961px)");
+    const onWide = () => {
+      if (wide.matches) setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
+    wide.addEventListener("change", onWide);
     return () => {
       document.body.style.overflow = previous;
+      main?.removeAttribute("inert");
       window.removeEventListener("keydown", onKey);
+      wide.removeEventListener("change", onWide);
     };
   }, [open]);
   return (
@@ -61,6 +73,22 @@ export function Header() {
             </>
           )}
         </a>
+        {/* Кнопка стоит перед меню: с клавиатуры после неё сразу идут его пункты. */}
+        <button
+          ref={toggle}
+          type="button"
+          className="menu-toggle"
+          aria-expanded={open}
+          aria-controls="site-nav"
+          aria-label={open ? copy.menuClose : copy.menuOpen}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? (
+            <X size={22} aria-hidden="true" />
+          ) : (
+            <Menu size={22} aria-hidden="true" />
+          )}
+        </button>
         <nav id="site-nav" className="site-nav" aria-label={copy.navigation}>
           {copy.nav.map((item) => (
             <a
@@ -80,21 +108,6 @@ export function Header() {
         <ContactLink compact source="header">
           {copy.headerCta}
         </ContactLink>
-        <button
-          ref={toggle}
-          type="button"
-          className="menu-toggle"
-          aria-expanded={open}
-          aria-controls="site-nav"
-          aria-label={open ? copy.menuClose : copy.menuOpen}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? (
-            <X size={22} aria-hidden="true" />
-          ) : (
-            <Menu size={22} aria-hidden="true" />
-          )}
-        </button>
       </div>
     </header>
   );

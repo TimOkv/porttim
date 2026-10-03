@@ -44,7 +44,7 @@ components/                   остальные секции по файлу: s
 components/reveal-observer.tsx  вешает .is-visible блокам .reveal и .is-playing цепочке .process при входе в окно просмотра
 components/cursor.tsx         курсор-прожектор: только для мыши и без prefers-reduced-motion
 components/ui/                набор на утилитах Tailwind; страницей не импортируется
-tests/portfolio.spec.ts       единственный шов проверки: 20 тестов × профили desktop и mobile, страница в браузере и ответы /tg
+tests/portfolio.spec.ts       единственный шов проверки: 22 теста × профили desktop и mobile, страница в браузере и ответы /tg
 public/portrait.jpg           портрет первого экрана; Portret.jpg в корне — исходник
 docs/superpowers/specs/       описание редизайна 2026-10-04 и прототип-образец
 PROJECT_SPEC.md               описание первой версии, устарело; актуальное — README.md

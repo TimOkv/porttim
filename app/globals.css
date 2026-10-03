@@ -10,6 +10,8 @@
   --mut: rgb(255 255 255 / 58%);
   --line: rgb(255 255 255 / 9%);
   --line2: rgb(255 255 255 / 20%);
+  /* Тот же цвет, что --line поверх фона, но без прозрачности: наложенные линии плашек не темнеют. */
+  --line-solid: #191b1e;
   --acc: #5b72ff;
   /* Заливка кнопок: чуть темнее акцента, чтобы белый текст на ней читался. */
   --acc-fill: #4a5fe8;
@@ -279,6 +281,11 @@ main section {
 .hero-copy {
   max-width: 720px;
 }
+/* Оффер появляется на CSS: он виден, даже если скрипты не загрузились. */
+.hero-in {
+  animation: hero-in 0.9s var(--ease) both;
+  animation-delay: calc(var(--d, 0) * 80ms);
+}
 .hero .display {
   font-size: clamp(34px, 4.6vw, 66px);
 }
@@ -349,17 +356,18 @@ main section {
 }
 
 /* Плашки: общие тонкие границы — зазор 1 px на фоне цвета линии. */
+/* Линии рисуют сами плашки, а не фон сетки: пустая ячейка последнего ряда остаётся пустой. */
 .tile-grid {
   display: grid;
   gap: 1px;
   margin-top: 52px;
-  background: var(--line);
-  border: 1px solid var(--line);
+  padding: 1px;
 }
 .tile {
   position: relative;
   overflow: hidden;
   background: var(--bg);
+  box-shadow: 0 0 0 1px var(--line-solid);
   transition: background 0.45s;
 }
 .tile::before {
@@ -1102,15 +1110,20 @@ main section {
   border-radius: 50%;
   background: var(--acc);
   translate: -50% -50%;
+  border: 1.5px solid var(--acc);
   box-shadow: 0 0 22px var(--acc);
   transition:
-    scale 0.3s var(--ease),
-    background 0.3s;
+    width 0.3s var(--ease),
+    height 0.3s var(--ease),
+    background 0.3s,
+    box-shadow 0.3s;
 }
+/* На ссылке и кнопке точка раскрывается в кольцо: надпись под курсором остаётся читаемой. */
 .cursor-hover .cursor-dot::before {
-  scale: 2.6;
-  background: #fff;
-  mix-blend-mode: difference;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  box-shadow: none;
 }
 .cursor-spot::before {
   content: "";
@@ -1140,6 +1153,12 @@ main section {
     scale: 1.15;
   }
 }
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    translate: 0 34px;
+  }
+}
 @keyframes portrait-in {
   from {
     opacity: 0;
@@ -1156,17 +1175,20 @@ main section {
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1100px) {
+  /* Текст первого экрана заходит на портрет: приглушаем его. */
+  .hero-portrait {
+    opacity: 0.5;
+  }
+}
+/* Меню с кнопкой: на 960 px и уже имя, четыре пункта и кнопка в ряд уже не помещаются. */
+@media (max-width: 960px) {
   html {
     scroll-padding-top: 68px;
   }
-  .container {
-    width: calc(100% - 40px);
-  }
-  main section {
-    padding: 72px 0;
-  }
+  /* static: панель меню встаёт от шапки, а не от контейнера, и закрывает экран во всю ширину. */
   .header-inner {
+    position: static;
     height: 68px;
     grid-template-columns: 1fr auto;
   }
@@ -1192,17 +1214,21 @@ main section {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    padding: 32px 20px;
+    padding: 32px 44px;
     background: var(--bg);
     visibility: hidden;
     opacity: 0;
+    /* Прячется после затухания, а показывается сразу: иначе в момент открытия в пункт меню нельзя поставить фокус. */
     transition:
       opacity 0.3s,
-      visibility 0.3s;
+      visibility 0s 0.3s;
   }
   .site-header[data-open] .site-nav {
     visibility: visible;
     opacity: 1;
+    transition:
+      opacity 0.3s,
+      visibility 0s;
   }
   .site-nav a:not(.contact-link) {
     padding: 14px 0;
@@ -1212,6 +1238,17 @@ main section {
   .site-nav .nav-cta {
     display: inline-flex;
     margin-top: 24px;
+  }
+}
+@media (max-width: 760px) {
+  .container {
+    width: calc(100% - 40px);
+  }
+  .site-nav {
+    padding: 32px 20px;
+  }
+  main section {
+    padding: 72px 0;
   }
   .hero {
     min-height: 0;

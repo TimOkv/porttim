@@ -20,6 +20,9 @@ test("dark page shows the name, the portrait and no runtime errors or overflow",
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     /Сайт, бот\s*и автоматизация —\s*в одних руках/,
@@ -162,10 +165,28 @@ test("phone menu opens with the button, closes on Escape and after choosing a se
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeHidden();
   await open.click();
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeVisible();
-  await expect(nav.getByRole("link", { name: "Обсудить задачу" })).toBeVisible();
+  await expect(
+    nav.getByRole("link", { name: "Обсудить задачу" }),
+  ).toBeVisible();
+  // Панель закрывает страницу во всю ширину, фокус уходит в меню, страница под ним неактивна.
+  const width = page.viewportSize()!.width;
+  const box = (await nav.boundingBox())!;
+  expect(box.x).toBe(0);
+  expect(box.width).toBe(width);
+  await expect(nav.getByRole("link", { name: "Услуги" })).toBeFocused();
+  await expect(page.locator("main")).toHaveAttribute("inert", "");
   await page.keyboard.press("Escape");
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeHidden();
   await expect(open).toBeFocused();
+  await expect(page.locator("main")).not.toHaveAttribute("inert", "");
+  // Поворот в широкий экран с открытым меню не оставляет страницу без прокрутки.
+  await open.click();
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await expect
+    .poll(() => page.evaluate(() => document.body.style.overflow))
+    .toBe("");
+  await expect(page.locator("main")).not.toHaveAttribute("inert", "");
+  await page.setViewportSize({ width, height: 800 });
   await open.click();
   await nav.getByRole("link", { name: "Обо мне" }).click();
   await expect(nav.getByRole("link", { name: "Кейсы" })).toBeHidden();
@@ -199,7 +220,9 @@ test("services and reasons show the agreed copy", async ({ page }) => {
   const tints = await page
     .locator("#why .tile")
     .evaluateAll((nodes) =>
-      nodes.map((node) => getComputedStyle(node).getPropertyValue("--t").trim()),
+      nodes.map((node) =>
+        getComputedStyle(node).getPropertyValue("--t").trim(),
+      ),
     );
   expect(new Set(tints).size).toBe(4);
 });
@@ -208,13 +231,25 @@ test("services and reasons show the agreed copy", async ({ page }) => {
 const specCases = [
   ["Портал 1С-услуг", "Сайты", "Понятный путь от услуги до заявки"],
   ["Обучающий веб-квест", "Сайты", "Учатся через игру, а не сухую теорию"],
-  ["Лендинг для интенсива", "Сайты", "Посетители регистрируются и приходят на интенсив"],
+  [
+    "Лендинг для интенсива",
+    "Сайты",
+    "Посетители регистрируются и приходят на интенсив",
+  ],
   ["Каталог стройматериалов", "Сайты", "100% заявок доходят без потерь"],
-  ["ИИ-агент учебных карточек", "Боты и ИИ", "У методистов в разы меньше рутины"],
+  [
+    "ИИ-агент учебных карточек",
+    "Боты и ИИ",
+    "У методистов в разы меньше рутины",
+  ],
   ["Школьный бот-помощник", "Боты и ИИ", "80% типовых вопросов — без человека"],
   ["Бот сбора заявок", "Боты и ИИ", "Заявки и данные — в одном канале"],
   ["Сайт → таблица", "Автоматизация", "20+ заявок за считаные минуты"],
-  ["Синхронизация сервисов", "Автоматизация", "Информация доходит без участия человека"],
+  [
+    "Синхронизация сервисов",
+    "Автоматизация",
+    "Информация доходит без участия человека",
+  ],
 ] as const;
 
 test("shows the nine cases in order with what was done and the result", async ({
@@ -245,10 +280,18 @@ test("filters show only categories with cases and the right counts", async ({
     projects.some((project) => project.category === category),
   );
   await expect(group.getByRole("button")).toHaveCount(used.length + 1);
-  const labels = { Web: "Сайты", "AI & Bots": "Боты и ИИ", Automation: "Автоматизация" };
+  const labels = {
+    Web: "Сайты",
+    "AI & Bots": "Боты и ИИ",
+    Automation: "Автоматизация",
+  };
   for (const category of used) {
-    const count = projects.filter((project) => project.category === category).length;
-    const button = group.getByRole("button", { name: `${labels[category]} · ${count}` });
+    const count = projects.filter(
+      (project) => project.category === category,
+    ).length;
+    const button = group.getByRole("button", {
+      name: `${labels[category]} · ${count}`,
+    });
     await button.click();
     await expect(button).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator(".case-card")).toHaveCount(count);
@@ -271,16 +314,19 @@ test("case grid is even: three, two and one column with equal rows", async ({
     [390, 1],
   ] as const) {
     await page.setViewportSize({ width, height: 900 });
-    const boxes = await page
-      .locator(".case-card")
-      .evaluateAll((nodes) =>
-        nodes.map((node) => {
-          const { top, height } = node.getBoundingClientRect();
-          return { top: Math.round(top), height: Math.round(height) };
-        }),
-      );
+    const boxes = await page.locator(".case-card").evaluateAll((nodes) =>
+      nodes.map((node) => {
+        const { top, height } = node.getBoundingClientRect();
+        return { top: Math.round(top), height: Math.round(height) };
+      }),
+    );
     const firstRow = boxes.filter((box) => box.top === boxes[0].top);
     expect(firstRow.length).toBe(columns);
+    // Линии рисуют сами плашки: пустая ячейка последнего ряда не светится серым блоком.
+    await expect(page.locator(".cases-grid")).toHaveCSS(
+      "background-color",
+      "rgba(0, 0, 0, 0)",
+    );
     expect(new Set(firstRow.map((box) => box.height)).size).toBe(1);
   }
 });
@@ -330,7 +376,9 @@ test("case dialog shows the details, the result and a Telegram draft naming the 
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Открыть кейс: Сайт → таблица" }).click();
+  await page
+    .getByRole("button", { name: "Открыть кейс: Сайт → таблица" })
+    .click();
   const dialog = page.getByRole("dialog");
   const draft =
     "Меня заинтересовал проект «Сайт → таблица», хочу сделать что-то подобное";
@@ -347,7 +395,9 @@ test("case dialog shows the details, the result and a Telegram draft naming the 
   expect(url.origin + url.pathname).toBe(personalChat);
   expect(url.searchParams.get("text")).toBe(draft);
   // Публичной ссылки у кейса нет — нет и кнопки просмотра.
-  await expect(dialog.getByRole("link", { name: "Посмотреть проект" })).toHaveCount(0);
+  await expect(
+    dialog.getByRole("link", { name: "Посмотреть проект" }),
+  ).toHaveCount(0);
 });
 
 test("case dialog scrolls on a low screen and keeps the Telegram button reachable", async ({
@@ -359,8 +409,9 @@ test("case dialog scrolls on a low screen and keeps the Telegram button reachabl
   const link = page
     .getByRole("dialog")
     .getByRole("link", { name: "Написать в Telegram" });
+  await expect(page.getByRole("dialog")).toHaveCSS("overflow-y", "auto");
   await link.scrollIntoViewIfNeeded();
-  await expect(link).toBeInViewport();
+  await expect(link).toBeInViewport({ ratio: 1 });
 });
 
 test("process shows four steps: animated in order, at once with reduced motion", async ({
@@ -424,7 +475,14 @@ test("about section names the author, shows three facts and no job details", asy
   );
   // Школа по названию, срок, должность и названия технологий на странице не встречаются.
   const text = await page.locator("body").innerText();
-  expect(text).not.toMatch(/EasyCode|должност|молодой специалист|Next\.js|n8n/i);
+  expect(text).not.toMatch(/EasyCode|должност|молодой специалист/i);
+  for (const word of [
+    ...stack.flatMap((group) => group.items),
+    "стек",
+    "Retention",
+    "лидогенерац",
+  ])
+    expect(text.toLowerCase()).not.toContain(word.toLowerCase());
   // \b в JS не видит границ кириллических слов, поэтому границы заданы явно.
   expect(await section.innerText()).not.toMatch(
     /(?<![а-яё])(год|года|лет)(?![а-яё])/i,
@@ -467,6 +525,16 @@ test("spotlight cursor exists only for a fine pointer and stays above the case d
   const dot = page.locator(".cursor-dot");
   const open = () => dot.evaluate((node) => node.matches(":popover-open"));
   expect(await open()).toBe(true);
+  // На кнопке точка раскрывается в кольцо: сплошной диск закрывал бы надпись.
+  await page.locator(".hero .button-ghost").hover();
+  await expect(html).toHaveClass(/cursor-hover/);
+  await expect
+    .poll(() =>
+      dot.evaluate(
+        (node) => getComputedStyle(node, "::before").backgroundColor,
+      ),
+    )
+    .toBe("rgba(0, 0, 0, 0)");
   // Окно кейса встаёт в верхний слой позже точки: точка должна подняться над ним заново.
   await dot.evaluate((node) => {
     const state = window as unknown as { lifts: number };
@@ -478,7 +546,9 @@ test("spotlight cursor exists only for a fine pointer and stays above the case d
   await page.locator(".case-card").first().click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await expect
-    .poll(() => page.evaluate(() => (window as unknown as { lifts: number }).lifts))
+    .poll(() =>
+      page.evaluate(() => (window as unknown as { lifts: number }).lifts),
+    )
     .toBeGreaterThanOrEqual(1);
   expect(await open()).toBe(true);
 });
@@ -530,12 +600,46 @@ test("layout fits narrow phones, tablets and large monitors, also after scrollin
   page,
 }) => {
   await page.goto("/");
-  for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
+  for (const width of [320, 375, 390, 768, 820, 900, 1024, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     await page.evaluate(() => window.scrollTo(0, 0));
     await expect.poll(() => overflow(page)).toBeLessThanOrEqual(0);
+    // Шапка закреплена и в ширину страницы не входит: её правый край проверяем отдельно.
+    const right = await page
+      .locator(".header-inner > .header-cta, .menu-toggle")
+      .evaluateAll((nodes) =>
+        Math.max(...nodes.map((node) => node.getBoundingClientRect().right)),
+      );
+    expect(right).toBeLessThanOrEqual(width);
     // Цифры первого экрана растут при прокрутке и не должны выталкивать страницу вбок.
     await page.evaluate(() => window.scrollTo(0, 320));
     await expect.poll(() => overflow(page)).toBeLessThanOrEqual(0);
   }
+});
+
+test("portrait is dimmed where the hero text runs over it", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 900, height: 1000 });
+  await page.goto("/");
+  const opacity = await page
+    .locator(".hero-portrait")
+    .evaluate((node) => Number(getComputedStyle(node).opacity));
+  expect(opacity).toBeLessThanOrEqual(0.5);
+});
+
+test("the offer is readable even when scripts fail to load", async ({
+  page,
+}) => {
+  await page.route(/\/_next\/static\/.*\.js/, (route) => route.abort());
+  await page.goto("/");
+  for (const block of [
+    page.getByRole("heading", { level: 1 }),
+    page.locator(".hero-description"),
+    page.locator(".hero-actions"),
+  ])
+    await expect
+      .poll(() => block.evaluate((node) => getComputedStyle(node).opacity))
+      .toBe("1");
 });
