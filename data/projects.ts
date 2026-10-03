@@ -307,7 +307,7 @@ export const about: {
       value: String(directions.length),
       label: `направления: ${directions.join(", ")}`,
     },
-    { value: "EdTech", label: "основная отрасль" },
+    { value: "EdTech", label: "практический опыт" },
   ],
   cta: "Написать в Telegram",
 };

@@ -592,7 +592,7 @@ test("about section presents the author after the cases", async ({ page }) => {
     new RegExp(
       `^${usedCategories.length}\\s*направления: Web, AI & Bots, Automation$`,
     ),
-    /^EdTech\s*основная отрасль$/,
+    /^EdTech\s*практический опыт$/,
   ]);
   // Кнопка секции открывает личный чат с общим черновиком.
   const cta = section.getByRole("link", { name: "Написать в Telegram" });
