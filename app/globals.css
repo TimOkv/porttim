@@ -1070,6 +1070,65 @@ main section {
   translate: 0 -3px;
 }
 
+/* Курсор-прожектор: классы has-cursor и cursor-hover на html вешает components/cursor.tsx. */
+.cursor-dot,
+.cursor-spot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  display: none;
+}
+.has-cursor .cursor-spot {
+  display: block;
+  z-index: 0;
+}
+.has-cursor .cursor-dot:popover-open {
+  display: block;
+  inset: 0 auto auto 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: visible;
+  width: 0;
+  height: 0;
+}
+.cursor-dot::before {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--acc);
+  translate: -50% -50%;
+  box-shadow: 0 0 22px var(--acc);
+  transition:
+    scale 0.3s var(--ease),
+    background 0.3s;
+}
+.cursor-hover .cursor-dot::before {
+  scale: 2.6;
+  background: #fff;
+  mix-blend-mode: difference;
+}
+.cursor-spot::before {
+  content: "";
+  position: absolute;
+  width: 620px;
+  height: 620px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--glow), transparent 62%);
+}
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+.has-cursor ::backdrop {
+  cursor: none;
+}
+
 @keyframes blink {
   50% {
     opacity: 0.35;

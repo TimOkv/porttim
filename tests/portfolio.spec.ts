@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { categories, projects, stack } from "../data/projects";
 
 const personalChat = "https://t.me/opskeeper";
@@ -428,4 +429,113 @@ test("about section names the author, shows three facts and no job details", asy
   expect(await section.innerText()).not.toMatch(
     /(?<![а-яё])(год|года|лет)(?![а-яё])/i,
   );
+});
+
+test("sections run in the agreed order and the menu leads to them", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const ids = await page
+    .locator("main section[id]")
+    .evaluateAll((nodes) => nodes.map((node) => node.id));
+  expect(ids).toEqual([
+    "home",
+    "services",
+    "projects",
+    "why",
+    "process",
+    "about",
+    "contact",
+  ]);
+  const hrefs = await page
+    .locator("#site-nav a:not(.contact-link)")
+    .evaluateAll((nodes) => nodes.map((node) => node.getAttribute("href")));
+  expect(hrefs).toEqual(["#services", "#projects", "#process", "#about"]);
+});
+
+test("spotlight cursor exists only for a fine pointer and stays above the case dialog", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const html = page.locator("html");
+  if (isMobile()) {
+    await expect(html).not.toHaveClass(/has-cursor/);
+    return;
+  }
+  await expect(html).toHaveClass(/has-cursor/);
+  const dot = page.locator(".cursor-dot");
+  const open = () => dot.evaluate((node) => node.matches(":popover-open"));
+  expect(await open()).toBe(true);
+  // Окно кейса встаёт в верхний слой позже точки: точка должна подняться над ним заново.
+  await dot.evaluate((node) => {
+    const state = window as unknown as { lifts: number };
+    state.lifts = 0;
+    node.addEventListener("toggle", (event) => {
+      if ((event as ToggleEvent).newState === "open") state.lifts += 1;
+    });
+  });
+  await page.locator(".case-card").first().click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => (window as unknown as { lifts: number }).lifts))
+    .toBeGreaterThanOrEqual(1);
+  expect(await open()).toBe(true);
+});
+
+test("reduced motion keeps final numbers, shows every block and drops the custom cursor", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect(page.locator("html")).not.toHaveClass(/has-cursor/);
+  const samples = await page
+    .locator(".hero-number-value")
+    .nth(2)
+    .evaluate(async (element) => {
+      const values = new Set<string>();
+      const started = performance.now();
+      while (performance.now() - started < 1200) {
+        values.add(element.textContent || "");
+        await new Promise(requestAnimationFrame);
+      }
+      return [...values];
+    });
+  expect(samples).toEqual(["до80%"]);
+  const hidden = await page
+    .locator(".reveal")
+    .evaluateAll(
+      (nodes) =>
+        nodes.filter((node) => getComputedStyle(node).opacity !== "1").length,
+    );
+  expect(hidden).toBe(0);
+});
+
+test("page and case dialog pass WCAG AA checks", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const scan = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(scan.violations).toEqual([]);
+  await page.locator(".case-card").first().click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  const dialogScan = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(dialogScan.violations).toEqual([]);
+});
+
+test("layout fits narrow phones, tablets and large monitors, also after scrolling", async ({
+  page,
+}) => {
+  await page.goto("/");
+  for (const width of [320, 375, 390, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect.poll(() => overflow(page)).toBeLessThanOrEqual(0);
+    // Цифры первого экрана растут при прокрутке и не должны выталкивать страницу вбок.
+    await page.evaluate(() => window.scrollTo(0, 320));
+    await expect.poll(() => overflow(page)).toBeLessThanOrEqual(0);
+  }
 });
