@@ -340,6 +340,7 @@ export const about: {
 // Утверждённый владельцем дизайн основной страницы, 2026-10-09.
 export const portfolioCopy = {
   intro: "Портфолио",
+  brandName: "okunev AI",
   monogram: "ТО",
   scroll: "Листайте вниз",
   aboutTitle: "Обо мне",

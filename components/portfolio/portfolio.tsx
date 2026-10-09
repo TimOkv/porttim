@@ -158,11 +158,14 @@ function SiteHeader() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.9, delay: reduced ? 0 : 0.9, ease }}
     >
-      <a href="#top" className={styles.brand}>
-        <span className={styles.brandMark} aria-hidden="true">
-          {text.monogram}
-        </span>
-        <span className={styles.brandName}>{profile.name}</span>
+      <a href="#top" className={styles.brand} aria-label={text.brandName}>
+        <Image
+          src="/portfolio/okunev-ai.svg"
+          alt=""
+          width={120}
+          height={32}
+          aria-hidden="true"
+        />
       </a>
       <button
         ref={menuButton}
