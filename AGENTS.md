@@ -11,69 +11,73 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 <!-- autopilot:start -->
 # PortTim
 
-Одностраничный тёмный сайт-резюме Тима Окунева (сайты, боты, автоматизация) на Next.js 16: за семь экранов показывает заказчику услуги и кейсы и ведёт его в личный чат Telegram с готовым черновиком.
+Портфолио Тима Окунева на Next.js 16. Основная страница `/` — утверждённый
+2026-10-09 дизайн Matthew: серый первый экран с бегущим именем и портретом,
+контрастные секции, кейсы строками, анимированные факты и иллюстрации.
+Порядок: Hero, About, Projects, Services, Why, Process, Contact.
 
 ## Команды
 
 ```sh
-npm ci                             # зависимости; Node >= 20.9
-npx playwright install chromium    # один раз: оба тестовых профиля идут на Chromium
-npm run dev                        # http://localhost:3000
+npm run dev                       # http://localhost:3000
 npm run lint
 npm run typecheck
-npm run build                      # если среда блокирует порты Turbopack: npm run build -- --webpack
-lsof -ti tcp:3100 | xargs kill; npm run build && npm run test:e2e   # все тесты на свежей сборке
-npx playwright test tests/portfolio.spec.ts --project=desktop       # один файл, один профиль (второй — mobile)
-npx playwright test -g "short /tg"                                  # один тест по части названия
+npm run build -- --webpack        # штатная альтернатива Turbopack
+npm run test:e2e                   # свежая сборка должна уже существовать
+PORTFOLIO_TEST_PORT=3102 npm run test:e2e  # отдельный порт, если 3100 занят
 ```
 
-## Структура
+Playwright запускает новый `next start`, переиспользование сервера выключено.
+Он проверяет текущую сборку, сам её не собирает. Тестовые профили desktop и
+mobile используют Chromium; при необходимости `npx playwright install chromium`.
 
-```
-app/page.tsx                  порядок секций: Header, Hero, Services, Projects, Why, Process, About, Footer; плюс RevealObserver и Cursor
-app/globals.css               единственный файл стилей: токены тёмной темы и свои классы секций (container, eyebrow, display, tile-grid, reveal)
-app/tg/[[...slug]]/route.ts   GET /tg и /tg/<id кейса> → 307 в Telegram; неизвестный id ведёт как /tg
-data/projects.ts              всё содержание и тексты: profile, copy, categories, categoryLabels, projects, heroNumbers, services, why, processSteps, stack, stackCount, about; типы Category, Project
-lib/telegram.ts               имя аккаунта и черновики: telegramUsername, getContactLink(source?), getProjectContactLink({ title }), getProjectDraft({ title }); без имени — null
-lib/max.ts                    ссылка на профиль в MAX: maxLink; невалидное значение — null
-components/contact-link.tsx   ContactLink({ children?, className?, source?, project? }) — кнопка связи в Telegram; при null ведёт на #contact
-components/header.tsx         шапка: имя, меню, полоса прогресса; на телефоне меню открывается кнопкой
-components/hero.tsx           первый экран; hero-portrait.tsx — портрет-фон, hero-numbers.tsx — четыре цифры
-components/projects.tsx       сетка кейсов, фильтр по category, окно кейса на <dialog>
-components/                   остальные секции по файлу: services, why, process, about, footer (в нём же #contact и плавающие кнопки Telegram и MAX)
-components/max-icon.tsx       значок MAX в линейном стиле сайта: MaxIcon({ size?, gradient? })
-components/reveal-observer.tsx  вешает .is-visible блокам .reveal и .is-playing цепочке .process при входе в окно просмотра
-components/cursor.tsx         курсор-прожектор: только для мыши и без prefers-reduced-motion
-components/ui/                набор на утилитах Tailwind; страницей не импортируется
-tests/portfolio.spec.ts       единственный шов проверки: 22 теста × профили desktop и mobile, страница в браузере и ответы /tg
-public/portrait.jpg           портрет первого экрана; Portret.jpg в корне — исходник
-docs/superpowers/specs/       описание редизайна 2026-10-04 и прототип-образец
-PROJECT_SPEC.md               описание первой версии, устарело; актуальное — README.md
-```
+## Источники и структура
 
-- Текст интерфейса живёт только в `data/projects.ts`; в компонентах секций русских строк нет.
-- Числа первого экрана, счётчики фильтра и факт про инструменты считаются из `projects` и `stack`: новый кейс — одна запись в массиве, новая технология — строка в `stack[].items` (на странице меняется только число, названия технологий не показываются).
-- `Project.url` не задан ни у одного кейса; с ним в окне кейса появляется кнопка «Посмотреть проект».
-- Необязательные переменные, вшиваются при сборке: `NEXT_PUBLIC_PROFILE_NAME`, `NEXT_PUBLIC_PORTRAIT_SRC`, `NEXT_PUBLIC_TELEGRAM_USERNAME`, `NEXT_PUBLIC_MAX_URL`; умолчания — в коде, образец — `.env.example`.
-- Тесты берут количества из данных, а тексты кейсов, черновиков, блока «Обо мне» и адреса чатов сверяют со строками в самом тесте: правка текста или переменной окружения требует правки теста.
-- На странице нет названия школы, должности, срока работы и названий технологий — это решение владельца; тест «about section…» это проверяет.
+- `app/page.tsx` — подключает `Portfolio`; `app/layout.tsx` — метаданные, шрифт,
+  тема документа и fallback для страницы без JavaScript.
+- `components/portfolio/portfolio.tsx` — текущие секции, мобильное меню, фильтры,
+  нативное окно кейса. Шапка стоит перед `main`, чтобы skip-link обходил меню.
+- `components/portfolio/motion-details.tsx` — счётчики фактов, четыре SVG-сюжета
+  и кольца этапов. Системный reduced motion поддерживается.
+- `components/portfolio/portfolio.module.css` — стили текущего дизайна.
+  `app/globals.css` содержит базовые стили и прежний дизайн; его параллельные
+  незавершённые изменения сохраняются.
+- `data/projects.ts` — единственный источник русского UI, кейсов, услуг и фактов:
+  `profile`, `copy`, `portfolioCopy`, `projects`, `services`, `why`, `processSteps`,
+  `about`, `stack`. Технологии на странице не перечисляются, считается их число.
+- `lib/telegram.ts` — имя аккаунта и черновики; `lib/max.ts` — проверенная ссылка
+  MAX. При невалидном контакте ссылка возвращает null.
+- `app/tg/[[...slug]]/route.ts` — 307 в личный Telegram с черновиком. Неизвестный
+  кейс обрабатывается как общий контакт. Redirect в next.config.ts для этого
+  не подходит: кириллица в Location должна оставаться закодированной.
+- `public/portfolio/` — портрет с прозрачным фоном, Oswald 700 и его OFL-лицензия.
+  Исходная фотография сохранена в `public/portrait.jpg` и `Portret.jpg`.
+- `tests/portfolio-current.spec.ts` — действующая проверка нового сайта.
+  `tests/portfolio.spec.ts` сохранён как тесты прежнего дизайна и не входит в
+  testMatch. Его незавершённые изменения принадлежат предыдущей работе.
+- `/prototype/matthew` перенаправляет на `/`. Исходники прототипа рядом с этим
+  маршрутом сохранены для сравнения, основная страница их не импортирует.
 
-## Подводные камни
+## Согласованные ограничения
 
-- Тесты идут против `next start` на порту 3100, проект сами не собирают и вне CI переиспользуют живой сервер: без остановки процесса на 3100 и пересборки проверяется прошлая сборка.
-- `/tg` — обработчик маршрута, а не `redirects()` в `next.config.ts`: там Next.js декодирует кириллицу в `destination`, и ответ падает с невалидным `Location`.
-- Блоки с классом `.reveal` невидимы, пока `RevealObserver` не повесит `.is-visible`: новый блок без этого класса появится сразу, с ним — только после входа в окно просмотра.
-- Точка курсора — элемент с `popover="manual"`: после открытия любого `<dialog>` её нужно показать заново, это делает `MutationObserver` в `components/cursor.tsx`.
-- Имена классов `outline`, `filter`, `container` и ключевых кадров `ping` заняты утилитами Tailwind: свой класс с таким именем получит чужие стили. Поэтому контурный текст — `.stroke-text`, кнопка фильтра — `.case-filter`, пульс кнопки — `quick-ping`.
-- `data/projects.ts` читает `process.env`: экспорт с именем `process` затенит его, поэтому шаги работы называются `processSteps`.
-- Размытие шапки (`backdrop-filter`) делает её опорным блоком для вложенных `position: fixed`: панель меню на телефоне стоит `absolute` от шапки.
+- Сохранять реальные тексты и результаты кейсов, не придумывать ссылки, клиентов,
+  должности или срок работы. Проекты EasyLab описывают только вклад владельца.
+- На странице нет декоративных номеров; номера этапов — только в кружках.
+  Значения фактов и количества в фильтрах остаются числовыми.
+- В услугах шесть направлений, включая CRM-системы и веб-панели по запросу.
+- `Project.url` необязателен: с ним окно показывает ссылку на проект.
+- Контакты открывают Telegram и MAX; Telegram получает черновик, не отправляет его.
+- Переменные сборки: `NEXT_PUBLIC_PROFILE_NAME`, `NEXT_PUBLIC_PORTRAIT_SRC`,
+  `NEXT_PUBLIC_TELEGRAM_USERNAME`, `NEXT_PUBLIC_MAX_URL`; значения по умолчанию
+  лежат в коде. Изменение контактов требует обновления ожиданий тестов.
+- При изменении анимаций проверять reduced motion, отсутствие горизонтального
+  скролла и чтение без JS. Полные значения фактов доступны скринридеру отдельно
+  от анимированных цифр. Окно сохраняет Tab-фокус и возвращает его к кейсу.
 
-## Как здесь работает Autopilot
+## Autopilot
 
-Сборка ведётся навыком `/autopilot`. Требования, спецификация и таски — в `.autopilot/`.
-Прогресс — `.autopilot/dashboard.html`. Правило: требование из `manifest.md`
-может снять только пользователь.
-
-Если работа продолжается — скажи «продолжи автопилот»: состояние поднимется
-из `.autopilot/state.js`, переспрашивать ничего не нужно.
+Состояние предыдущих работ — в `.autopilot/state.js`, требования и задачи —
+в `.autopilot/`, панель — `.autopilot/dashboard.html`. Требование из `manifest.md`
+может снять только пользователь. Продолжение по команде «продолжи автопилот»
+начинается с чтения состояния и текущей задачи.
 <!-- autopilot:end -->

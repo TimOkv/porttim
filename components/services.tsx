@@ -1,7 +1,21 @@
-import { AppWindow, Blocks, Send, Workflow } from "lucide-react";
+import {
+  AppWindow,
+  Blocks,
+  Send,
+  Workflow,
+  ContactRound,
+  PanelsTopLeft,
+} from "lucide-react";
 import { copy, services } from "@/data/projects";
 import { delay } from "@/lib/utils";
-const icons = { window: AppWindow, send: Send, workflow: Workflow, blocks: Blocks };
+const icons = {
+  window: AppWindow,
+  send: Send,
+  workflow: Workflow,
+  blocks: Blocks,
+  crm: ContactRound,
+  panel: PanelsTopLeft,
+};
 export function Services() {
   return (
     <section id="services" aria-labelledby="services-title">
@@ -16,7 +30,11 @@ export function Services() {
           {services.map((service, index) => {
             const Icon = icons[service.icon];
             return (
-              <div key={service.name} className="tile reveal" style={delay(index + 1)}>
+              <div
+                key={service.name}
+                className="tile reveal"
+                style={delay(index + 1)}
+              >
                 <Icon size={34} strokeWidth={1.2} aria-hidden="true" />
                 <h3>{service.name}</h3>
                 <p>{service.text}</p>

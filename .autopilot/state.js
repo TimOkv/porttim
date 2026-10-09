@@ -1,267 +1,154 @@
 window.STATE =
 {
-  "slug": "portfolio-cases-refactor",
-  "dir": "2026-10-03-portfolio-cases-refactor",
-  "title": "Портфолио PortTim: стек, опыт EasyCode и 9 кейсов",
-  "mode": "interview",
-  "depth": "deep",
+  "slug": "readable-copy",
+  "dir": "2026-10-08-readable-copy--wip",
+  "title": "Короткие кейсы и скруглённые карточки",
+  "mode": "semi",
+  "depth": "normal",
   "polish": null,
-  "tier": "T1",
-  "briefFile": "2026-10-03-brief.md",
+  "tier": "T0",
+  "briefFile": "2026-10-08-brief.md",
   "memoryFile": "AGENTS.md",
-  "skillDir": "/Users/timofejokunev/.claude/skills/autopilot",
-  "startedAt": "2026-10-03T22:04:51+03:00",
-  "updatedAt": "2026-10-03T23:13:20+03:00",
-  "finishedAt": "2026-10-03T23:13:20+03:00",
+  "skillDir": "/Users/timofejokunev/.agents/skills/autopilot",
+  "startedAt": "2026-10-08T17:50:20+03:00",
+  "updatedAt": "2026-10-08T19:49:17+03:00",
+  "finishedAt": null,
   "stages": [
     {
       "id": "preflight",
       "status": "done",
-      "startedAt": "2026-10-03T22:04:51+03:00",
-      "finishedAt": "2026-10-03T22:07:03+03:00"
+      "startedAt": "2026-10-08T17:50:20+03:00",
+      "finishedAt": "2026-10-08T17:50:20+03:00"
     },
     {
       "id": "manifest",
       "status": "done",
-      "startedAt": "2026-10-03T22:05:40+03:00",
-      "finishedAt": "2026-10-03T22:07:03+03:00"
+      "startedAt": "2026-10-08T17:50:20+03:00",
+      "finishedAt": "2026-10-08T17:51:02+03:00"
     },
     {
       "id": "briefing",
-      "status": "done",
-      "startedAt": "2026-10-03T22:07:03+03:00",
-      "finishedAt": "2026-10-03T22:31:20+03:00"
+      "status": "skipped",
+      "note": "вопросов не потребовалось: редактируем существующие тексты"
     },
     {
       "id": "spec",
       "status": "done",
-      "startedAt": "2026-10-03T22:31:20+03:00",
-      "finishedAt": "2026-10-03T22:37:31+03:00"
+      "startedAt": "2026-10-08T17:51:02+03:00",
+      "finishedAt": "2026-10-08T17:51:53+03:00"
     },
     {
       "id": "plan",
-      "status": "done",
-      "startedAt": "2026-10-03T22:37:31+03:00",
-      "finishedAt": "2026-10-03T22:39:13+03:00"
+      "status": "skipped",
+      "note": "ярус T0 — без разбивки на таски"
     },
     {
       "id": "build",
       "status": "done",
-      "startedAt": "2026-10-03T22:39:13+03:00",
-      "note": "2 из 2 тасков готовы",
-      "finishedAt": "2026-10-03T23:05:30+03:00"
+      "startedAt": "2026-10-08T18:46:41+03:00",
+      "note": "Уточнение: возврат остальных текстов и дизайн кейсов",
+      "finishedAt": "2026-10-08T18:57:19+03:00"
     },
     {
       "id": "review",
       "status": "done",
-      "startedAt": "2026-10-03T22:52:32+03:00",
-      "note": "проверено 2 из 2",
-      "finishedAt": "2026-10-03T23:05:30+03:00"
+      "startedAt": "2026-10-08T18:48:51+03:00",
+      "finishedAt": "2026-10-08T18:57:19+03:00"
     },
     {
       "id": "final",
-      "status": "done",
-      "startedAt": "2026-10-03T23:05:30+03:00",
-      "finishedAt": "2026-10-03T23:13:20+03:00",
-      "note": "слепая приёмка: 1 расхождение, исправлено"
+      "status": "failed",
+      "startedAt": "2026-10-08T19:13:21+03:00",
+      "note": "PortTim опубликован и проверен. Глобальная настройка Vercel-плагина/MCP заблокирована записью в пользовательские папки."
     }
   ],
   "requirements": {
-    "total": 51,
-    "done": 51,
+    "total": 9,
+    "done": 8,
     "inTicket": 0,
-    "inSpec": 0,
+    "inSpec": 1,
     "placeholder": 0,
     "deferred": 0,
     "dropped": 0
   },
-  "tickets": [
-    {
-      "id": "01",
-      "title": "Девять кейсов, полоса цифр и ссылки в Telegram",
-      "requirements": [
-        "R01",
-        "R02",
-        "R04",
-        "R05",
-        "R12",
-        "R13",
-        "R14",
-        "R15",
-        "R16",
-        "R17",
-        "R18",
-        "R19",
-        "R20",
-        "R21",
-        "R22",
-        "R23",
-        "R24",
-        "R25",
-        "R27",
-        "R28",
-        "R29",
-        "R30",
-        "R31",
-        "R32",
-        "R33",
-        "R35i",
-        "R36i",
-        "R37i",
-        "R38i",
-        "R39i",
-        "R40i",
-        "R41i",
-        "R42i",
-        "G06"
-      ],
-      "blockedBy": [],
-      "wave": 1,
-      "zone": [
-        "data/",
-        "lib/",
-        "components/projects.tsx",
-        "components/contact-link.tsx",
-        "app/tg/",
-        "app/globals.css",
-        "tests/"
-      ],
-      "status": "done",
-      "finishedAt": "2026-10-03T22:55:53+03:00",
-      "files": [
-        "data/projects.ts",
-        "lib/telegram.ts",
-        "components/projects.tsx",
-        "components/contact-link.tsx",
-        "components/header.tsx",
-        "components/footer.tsx",
-        "components/hero.tsx",
-        "app/globals.css",
-        "tests/portfolio.spec.ts",
-        "components/project-preview.tsx (удалён)"
-      ],
-      "tests": {
-        "passed": 28,
-        "failed": 0
-      },
-      "commit": "a27bb94",
-      "concerns": [],
-      "startedAt": "2026-10-03T22:39:13+03:00",
-      "retries": 0,
-      "repairs": 0,
-      "handoffs": 0
-    },
-    {
-      "id": "02",
-      "title": "Блок «Обо мне», стек из трёх групп и меню",
-      "requirements": [
-        "R03",
-        "R06",
-        "R07",
-        "R08",
-        "R09",
-        "R10",
-        "R11",
-        "R33",
-        "R42i",
-        "R43i",
-        "R44i",
-        "G01",
-        "G02",
-        "G03",
-        "G04",
-        "G05"
-      ],
-      "blockedBy": [
-        "01"
-      ],
-      "wave": 2,
-      "zone": [
-        "data/",
-        "components/about.tsx",
-        "components/tech-stack.tsx",
-        "app/page.tsx",
-        "app/globals.css",
-        "tests/",
-        "README.md"
-      ],
-      "status": "done",
-      "finishedAt": "2026-10-03T23:05:30+03:00",
-      "files": [
-        "components/about.tsx",
-        "data/projects.ts",
-        "components/tech-stack.tsx",
-        "app/page.tsx",
-        "app/globals.css",
-        "tests/portfolio.spec.ts",
-        "README.md"
-      ],
-      "tests": {
-        "passed": 36,
-        "failed": 0
-      },
-      "commit": "4ff57d4",
-      "concerns": [],
-      "startedAt": "2026-10-03T22:55:53+03:00",
-      "retries": 0,
-      "repairs": 1,
-      "repairFindings": ["факт «EdTech — основная отрасль» заказчик о себе не говорил — заменить подпись на «практический опыт»"],
-      "handoffs": 0
+  "tickets": [],
+  "singlePass": {
+    "startedAt": "2026-10-08T18:46:41+03:00",
+    "status": "done",
+    "files": [
+      "data/projects.ts",
+      "app/globals.css",
+      "tests/portfolio.spec.ts"
+    ],
+    "finishedAt": "2026-10-08T18:57:19+03:00",
+    "commit": null,
+    "tests": {
+      "passed": 3,
+      "failed": 0,
+      "blocked": 42,
+      "note": "3 HTTP маршрута; живой IAB:9 диалогов,4 фильтра,5 размеров; полный CLI ограничен средой"
     }
-  ],
-  "singlePass": null,
+  },
   "tests": {
-    "passed": 36,
-    "failed": 0
+    "passed": 3,
+    "failed": 0,
+    "blocked": 42,
+    "note": "3 HTTP маршрута; живой IAB:9 диалогов,4 фильтра,5 размеров; полный CLI ограничен средой"
   },
   "debt": {
     "placeholders": [],
-    "assumptions": ["Формулировка про EasyLab с косой чертой разделена по кейсам: квест — «интерактивный сценарий», вебинарный лендинг — «контентный модуль»", "Выделенный результат у семи кейсов без числа написан мной — коротким пересказом твоей «Ценности», без новых утверждений", "Заголовок «Молодой специалист. Опыт — на реальных задачах.» и среднее предложение второго абзаца «Обо мне» написаны мной по твоему поручению", "Заголовки секции кейсов заменены на прямые: «Кейсы. Что сделано и что это дало.»", "Стили меню в шапке поправлены на узких телефонах: четвёртый пункт «Обо мне» иначе не помещался"],
+    "assumptions": [],
     "emptyEnv": []
   },
-  "additions": ["Кнопка «Посмотреть проект» в окне кейса — появится, когда кейсу будет вписана ссылка (ради списка кейсов, R16)", "Кнопка связи внутри блока «Обо мне» (ради блока о себе, R10)", "Факты «3 направления» и «EdTech — практический опыт» в ряду фактов (ради блока о себе, R10)", "Пояснения под цифрами полосы — из какого кейса каждая (ради согласованности цифр с кейсами, R38i)", "Кнопка фильтра не показывается у категории без кейсов (ради фильтров, R30)", "Число кейсов и направлений считается из данных — в полосе цифр, фактах и фильтре (ради структуры данных, R04)"],
+  "additions": [],
   "coverage": {
-    "missing": 2,
-    "half": 7,
+    "missing": 0,
+    "half": 0,
     "extra": 0,
-    "note": "Независимая сверка брифа и спецификации: 2 пропуска (число цифр у кейсов, запрет на имена клиентов) и 7 половин (образец, границы схемы данных, EasyLab против фразы про EasyCode, деление формулировки EasyLab, глубокий анализ, тексты черновиков, метрика кейса) — все дописаны в спецификацию. Из лишнего: домысленные «по своей инициативе» и «учеников» убраны из текста «Обо мне»; остальное — проработка требований, привязанная к ним."
+    "note": "G2 уточнения: возврат остальных текстов и скругление кейсов покрыты полностью"
   },
   "concerns": [
-    "tests/portfolio.spec.ts:25 — набор кнопок фильтра выводится тем же выражением, что в компоненте: тест не упадёт, если пустая категория перестанет отсекаться",
-    "tests/portfolio.spec.ts:467 — ветка «ссылка задана → кнопка „Посмотреть проект“» не проверена: ссылки нет ни у одного кейса",
-    "tests/portfolio.spec.ts — ветка «некорректное имя аккаунта → якорь на контактный блок» не покрыта автотестом (проверена исполнителем вручную отдельной сборкой)",
-    "tests/portfolio.spec.ts:155 — с таблицей содержания целиком сверен только кейс 01 (и 06 в окне); у остальных формат, ценность и теги литералами не проверены",
-    "tests/portfolio.spec.ts:253 — тексты «Все проекты» и «проектов» взяты из данных, а не записаны литералами",
-    "tests/portfolio.spec.ts:310 — собраны три кадра, утверждается только последний",
-    "снято, дело вкуса: tests/portfolio.spec.ts:136 — один тест на 110 строк с несколькими причинами упасть",
-    "components/footer.tsx:52 — плавающая кнопка повторяет выбор «ссылка или якорь» из contact-link.tsx",
-    "components/contact-link.tsx:28 — тип { title: string } записан заново при экспортируемом ContactProject",
-    "components/projects.tsx:216 — щелчок по промежутку между кнопками в окне кейса тоже закрывает окно",
-    "app/globals.css:1179 — правило двух колонок сетки и кегль тегов заданы дважды",
-    "снято, дело вкуса: app/globals.css:632 — класс .bento-grid называет теперь ровную сетку",
-    "components/hero.tsx:55 — на первом экране изменён один атрибут: кнопке передана точка входа source=\"hero\" (видимое не менялось)",
-    "data/projects.ts:282 — выражение «категории, в которых есть кейс» существует в трёх местах (данные, компонент кейсов, тест)",
-    "data/projects.ts:308 — подписи «направления» и «реализованных кейсов» вписаны одной грамматической формой при считаемом числе",
-    "data/projects.ts:312 — подпись кнопки связи в блоке «Обо мне» повторяет общую подпись кнопки",
-    "tests/portfolio.spec.ts:590 — «числа в фактах считаются из данных» на этом шве не отличимо от вписанных чисел",
-    "tests/portfolio.spec.ts — ветка «пустая группа стека не рисуется» не покрыта",
-    "tests/portfolio.spec.ts — тест меню на телефонах не проверяет выход пунктов за шапку и наезд на бренд",
-    "tests/portfolio.spec.ts — неизменность первого экрана проверена в тесте меню и без подписей портрета",
-    "tests/portfolio.spec.ts — счётчик чипов стека повторяет уже закреплённые литералами списки",
-    "app/globals.css:1566 — правила меню дописаны в конец файла, одно значение зазора перекрыто и мертво",
-    "app/globals.css:817 — рамки ряда фактов рассчитаны ровно на четыре факта",
-    "снято, дело вкуса: app/globals.css:881 — вид чипа стека почти повторяет вид тега кейса",
-    "app/globals.css:1230 — одна колонка сетки стека задана дважды",
-    "data/projects.ts:42 — описание сайта для поисковиков оставлено прежним: новому профилю не противоречит"
+    "Полный CLI E2E не подтверждён: MachPort deny; функциональная проверка выполнена root в живом IAB.",
+    "Независимый reviewer не получил live IAB на продолжении; проверил данные и свежие снимки."
   ],
   "reviewers": {
-    "manifestSpec": "reviewer-ms",
-    "craft": "reviewer-craft"
+    "manifestSpec": "/root/requirements_review",
+    "craft": "/root/craft_review"
   },
   "blind": {
-    "agreed": 50,
-    "drift": 1,
-    "fixed": 1,
-    "note": "Слепая приёмка: проект поднимается, основной сценарий проходит. Одно расхождение — факт «EdTech — основная отрасль» в блоке «Обо мне» заказчик о себе не говорил; исправлено и подтверждено повторным ревью."
+    "agreed": 7,
+    "drift": 0,
+    "note": "Независимо: точный scope и снимки. Независимый live IAB недоступен; root прошёл9 диалогов и адаптивную сетку."
+  },
+  "deployment": {
+    "status": "ready",
+    "project": "porttim",
+    "workspace": "/private/tmp/porttim-rounded-gjm6tuss",
+    "cliCache": "/private/tmp/porttim-vercel-cache",
+    "cliAuthConfig": "/private/tmp/porttim-vercel-auth",
+    "loginSessionId": 90003,
+    "loginTabId": "5",
+    "error": null,
+    "approvalReview": "Подключение Vercel-плагина отклонено: новый доступ к внешнему аккаунту требует отдельного разрешения.",
+    "account": "timaokunev45-hue",
+    "id": "dpl_GGrwCV4ePA7eBTw6WarEW7zc4eJ9",
+    "url": "https://porttim.vercel.app",
+    "deploymentUrl": "https://porttim-dui3f45lw-timaokunev45-hues-projects.vercel.app",
+    "readyState": "READY",
+    "target": "production",
+    "verified": true
+  },
+  "vercelSetup": {
+    "guide": "https://vercel.com/get-started.md",
+    "cliVersion": "63.1.0",
+    "authenticatedAs": "timaokunev45-hue",
+    "cliScope": "Временный CLI-кэш и auth config /private/tmp/porttim-vercel-auth",
+    "globalCliInstall": "blocked: EPERM ~/.npm-global/lib/node_modules/vercel",
+    "guidance": "blocked: EPERM ~/.cache/plugins; standalone skills не устанавливались",
+    "mcp": "blocked: EPERM ~/.codex/config.toml; сервер vercel не добавлен",
+    "mcpEndpoint": "https://mcp.vercel.com",
+    "authenticatedMcpCheck": "not run: server not registered",
+    "nativeSettings": "blocked: computer use cannot control com.openai.codex for safety reasons",
+    "reload": "not performed; installation did not succeed"
   }
 }

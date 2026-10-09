@@ -1,0 +1,59 @@
+{
+  "copy": {
+    "before": 3568,
+    "after": 2375,
+    "reduction": 33,
+    "projects": [
+      {
+        "id": "1c-portal",
+        "before": 313,
+        "after": 193
+      },
+      {
+        "id": "web-quest",
+        "before": 249,
+        "after": 155
+      },
+      {
+        "id": "webinar-landing",
+        "before": 239,
+        "after": 156
+      },
+      {
+        "id": "materials-catalog",
+        "before": 261,
+        "after": 155
+      },
+      {
+        "id": "card-agent",
+        "before": 185,
+        "after": 135
+      },
+      {
+        "id": "school-assistant",
+        "before": 237,
+        "after": 179
+      },
+      {
+        "id": "lead-bot-parser",
+        "before": 246,
+        "after": 181
+      },
+      {
+        "id": "web-to-sheets",
+        "before": 198,
+        "after": 157
+      },
+      {
+        "id": "service-sync",
+        "before": 195,
+        "after": 145
+      }
+    ]
+  },
+  "checks": [],
+  "bugs": [],
+  "screenshots": [],
+  "console": [],
+  "fatal": "browserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /Users/timofejokunev/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/qz/wrz5x6ws23x2bn71x6t3fj9c0000gn/T/playwright_chromiumdev_profile-Tz4n8r --remote-debugging-pipe --no-startup-window\n<launched> pid=42824\n[pid=42824][err] [1008/180115.150447:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9\n[pid=42824][err] [1008/180115.172926:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.\n[pid=42824][err] [1008/180115.175166:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.\n[pid=42824][err] [1008/180115.185399:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.42824: Permission denied (1100)\nCall log:\n\u001b[2m  - <launching> /Users/timofejokunev/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=/var/folders/qz/wrz5x6ws23x2bn71x6t3fj9c0000gn/T/playwright_chromiumdev_profile-Tz4n8r --remote-debugging-pipe --no-startup-window\u001b[22m\n\u001b[2m  - <launched> pid=42824\u001b[22m\n\u001b[2m  - [pid=42824][err] [1008/180115.150447:ERROR:base/power_monitor/thermal_state_observer_mac.mm:140] ThermalStateObserverMac unable to register to power notifications. Result: 9\u001b[22m\n\u001b[2m  - [pid=42824][err] [1008/180115.172926:ERROR:net/dns/dns_config_service_posix.cc:138] DNS config watch failed to start.\u001b[22m\n\u001b[2m  - [pid=42824][err] [1008/180115.175166:WARNING:net/dns/dns_config_service_posix.cc:197] Failed to read DnsConfig.\u001b[22m\n\u001b[2m  - [pid=42824][err] [1008/180115.185399:FATAL:base/apple/mach_port_rendezvous_mac.cc:159] Check failed: kr == KERN_SUCCESS. bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.42824: Permission denied (1100)\u001b[22m\n\u001b[2m  - [pid=42824] <gracefully close start>\u001b[22m\n\u001b[2m  - [pid=42824] <kill>\u001b[22m\n\u001b[2m  - [pid=42824] <will force kill>\u001b[22m\n\u001b[2m  - [pid=42824] exception while trying to kill process: Error: kill EPERM\u001b[22m\n\u001b[2m  - [pid=42824] <process did exit: exitCode=null, signal=SIGTRAP>\u001b[22m\n\u001b[2m  - [pid=42824] starting temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=42824] finished temporary directories cleanup\u001b[22m\n\u001b[2m  - [pid=42824] <gracefully close end>\u001b[22m\n\n    at /private/tmp/porttim-blind-acceptance.cjs:16:41\n    at Object.<anonymous> (/private/tmp/porttim-blind-acceptance.cjs:55:261)"
+}

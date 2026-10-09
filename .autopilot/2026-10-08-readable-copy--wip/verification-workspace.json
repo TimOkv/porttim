@@ -1,0 +1,4 @@
+{
+  "path": "/private/tmp/porttim-acceptance-ndqn691e",
+  "reason": "EPERM удаление директорий кэша .next в рабочей папке; проверяется копия текущих отслеживаемых файлов, без env и secrets"
+}

@@ -1,0 +1,452 @@
+{
+  "checks": [
+    {
+      "title": "Портал 1С-услуг",
+      "dialog": {
+        "client": 618,
+        "details": "Многостраничный сайт для компании по внедрению 1С: услуги, примеры работ и формы заявок. Быстро открывается и помогает найти услугу.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Портал 1С-услуг», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%9F%D0%BE%D1%80%D1%82%D0%B0%D0%BB%201%D0%A1-%D1%83%D1%81%D0%BB%D1%83%D0%B3%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "rect": {
+          "left": 330,
+          "right": 950
+        },
+        "result": "От услуги — к заявке",
+        "scroll": 618,
+        "title": "Портал 1С-услуг"
+      },
+      "closedBy": "button",
+      "focus": true
+    },
+    {
+      "title": "Обучающий веб-квест",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Придумал сценарий и игровые механики для учеников онлайн-школы. Собрал квест на платформе EasyLab.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Обучающий веб-квест», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%9E%D0%B1%D1%83%D1%87%D0%B0%D1%8E%D1%89%D0%B8%D0%B9%20%D0%B2%D0%B5%D0%B1-%D0%BA%D0%B2%D0%B5%D1%81%D1%82%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "Обучение через игру",
+        "scroll": 618,
+        "title": "Обучающий веб-квест"
+      },
+      "closedBy": "Escape",
+      "close": {
+        "focus": "Открыть кейс: Обучающий веб-квест",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "Лендинг для интенсива",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Страница интенсива онлайн-школы на EasyLab. Помогает зарегистрироваться и прийти на интенсив.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Лендинг для интенсива», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%9B%D0%B5%D0%BD%D0%B4%D0%B8%D0%BD%D0%B3%20%D0%B4%D0%BB%D1%8F%20%D0%B8%D0%BD%D1%82%D0%B5%D0%BD%D1%81%D0%B8%D0%B2%D0%B0%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "Регистрация и участие в интенсиве",
+        "scroll": 618,
+        "title": "Лендинг для интенсива"
+      },
+      "closedBy": "backdrop",
+      "close": {
+        "focus": "Открыть кейс: Лендинг для интенсива",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "Каталог стройматериалов",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Каталог стройматериалов для опта и розницы с быстрым расчётом. Заявки сразу попадают в таблицу.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Каталог стройматериалов», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%9A%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3%20%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BC%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB%D0%BE%D0%B2%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "100% заявок без потерь",
+        "scroll": 618,
+        "title": "Каталог стройматериалов"
+      },
+      "closedBy": "button",
+      "close": {
+        "focus": "Открыть кейс: Каталог стройматериалов",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "ИИ-агент учебных карточек",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Нейросеть готовит учебные карточки и задания в нужной структуре.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «ИИ-агент учебных карточек», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%98%D0%98-%D0%B0%D0%B3%D0%B5%D0%BD%D1%82%20%D1%83%D1%87%D0%B5%D0%B1%D0%BD%D1%8B%D1%85%20%D0%BA%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%B5%D0%BA%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "В разы меньше рутины у методистов",
+        "scroll": 618,
+        "title": "ИИ-агент учебных карточек"
+      },
+      "closedBy": "Escape",
+      "close": {
+        "focus": "Открыть кейс: ИИ-агент учебных карточек",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "Школьный бот-помощник",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Круглосуточный Telegram-бот: расписание, звонки и меню столовой. Нейросеть помогает с заданиями.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Школьный бот-помощник», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%A8%D0%BA%D0%BE%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D0%B1%D0%BE%D1%82-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D0%BD%D0%B8%D0%BA%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "80% типовых вопросов — автоматически",
+        "scroll": 618,
+        "title": "Школьный бот-помощник"
+      },
+      "closedBy": "backdrop",
+      "close": {
+        "focus": "Открыть кейс: Школьный бот-помощник",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "Бот сбора заявок",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Telegram-бот уточняет заявки и отбирает целевые. Также следит за данными на внешнем сайте и собирает их.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Бот сбора заявок», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%91%D0%BE%D1%82%20%D1%81%D0%B1%D0%BE%D1%80%D0%B0%20%D0%B7%D0%B0%D1%8F%D0%B2%D0%BE%D0%BA%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "Заявки и данные в одном канале",
+        "scroll": 618,
+        "title": "Бот сбора заявок"
+      },
+      "closedBy": "button",
+      "close": {
+        "focus": "Открыть кейс: Бот сбора заявок",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "Сайт → таблица",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Заявки с сайта автоматически проверяются и записываются в таблицу. Менеджеры не копируют контакты вручную.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Сайт → таблица», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%A1%D0%B0%D0%B9%D1%82%20%E2%86%92%20%D1%82%D0%B0%D0%B1%D0%BB%D0%B8%D1%86%D0%B0%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "20+ заявок за минуты",
+        "scroll": 618,
+        "title": "Сайт → таблица"
+      },
+      "closedBy": "Escape",
+      "close": {
+        "focus": "Открыть кейс: Сайт → таблица",
+        "open": false,
+        "overflow": ""
+      }
+    },
+    {
+      "title": "Синхронизация сервисов",
+      "passed": true,
+      "dialog": {
+        "client": 618,
+        "details": "Сервисы автоматически обмениваются данными и присылают уведомления в рабочие чаты.",
+        "draft": "В чате уже будет набран текст:«Меня заинтересовал проект «Синхронизация сервисов», хочу сделать что-то подобное»",
+        "links": [
+          {
+            "href": "https://t.me/opskeeper?text=%D0%9C%D0%B5%D0%BD%D1%8F%20%D0%B7%D0%B0%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D0%BE%D0%B2%D0%B0%D0%BB%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%20%C2%AB%D0%A1%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%BE%D0%B2%C2%BB%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D1%81%D0%B4%D0%B5%D0%BB%D0%B0%D1%82%D1%8C%20%D1%87%D1%82%D0%BE-%D1%82%D0%BE%20%D0%BF%D0%BE%D0%B4%D0%BE%D0%B1%D0%BD%D0%BE%D0%B5",
+            "label": "Написать в Telegram"
+          },
+          {
+            "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+            "label": "Написать в MAX"
+          }
+        ],
+        "result": "Данные приходят автоматически",
+        "scroll": 618,
+        "title": "Синхронизация сервисов"
+      },
+      "closedBy": "backdrop",
+      "close": {
+        "focus": "Открыть кейс: Синхронизация сервисов",
+        "open": false,
+        "overflow": ""
+      }
+    }
+  ],
+  "bugs": [],
+  "screenshots": [
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-dialog-desktop.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-cards-390.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-dialog-390.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-full-390.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-cards-375.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-full-375.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-cards-768.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-full-768.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-cards-1440.jpg",
+    "/Users/timofejokunev/Desktop/PortTim/.autopilot/2026-10-08-readable-copy--wip/evidence/blind-full-1440.jpg"
+  ],
+  "filters": [
+    {
+      "active": [
+        "Автоматизация · 2"
+      ],
+      "status": "Показано кейсов: 2",
+      "titles": [
+        "Сайт → таблица",
+        "Синхронизация сервисов"
+      ]
+    },
+    {
+      "active": [
+        "Сайты · 4"
+      ],
+      "status": "Показано кейсов: 4",
+      "titles": [
+        "Портал 1С-услуг",
+        "Обучающий веб-квест",
+        "Лендинг для интенсива",
+        "Каталог стройматериалов"
+      ]
+    },
+    {
+      "active": [
+        "Боты и ИИ · 3"
+      ],
+      "status": "Показано кейсов: 3",
+      "titles": [
+        "ИИ-агент учебных карточек",
+        "Школьный бот-помощник",
+        "Бот сбора заявок"
+      ]
+    },
+    {
+      "active": [
+        "Автоматизация · 2"
+      ],
+      "status": "Показано кейсов: 2",
+      "titles": [
+        "Сайт → таблица",
+        "Синхронизация сервисов"
+      ]
+    },
+    {
+      "active": [
+        "Все · 9"
+      ],
+      "status": "Показано кейсов: 9",
+      "titles": [
+        "Портал 1С-услуг",
+        "Обучающий веб-квест",
+        "Лендинг для интенсива",
+        "Каталог стройматериалов",
+        "ИИ-агент учебных карточек",
+        "Школьный бот-помощник",
+        "Бот сбора заявок",
+        "Сайт → таблица",
+        "Синхронизация сервисов"
+      ]
+    },
+    {
+      "active": [
+        "Боты и ИИ · 3"
+      ],
+      "status": "Показано кейсов: 3",
+      "titles": [
+        "ИИ-агент учебных карточек",
+        "Школьный бот-помощник",
+        "Бот сбора заявок"
+      ]
+    },
+    {
+      "active": [
+        "Все · 9"
+      ],
+      "status": "Показано кейсов: 9",
+      "titles": [
+        "Портал 1С-услуг",
+        "Обучающий веб-квест",
+        "Лендинг для интенсива",
+        "Каталог стройматериалов",
+        "ИИ-агент учебных карточек",
+        "Школьный бот-помощник",
+        "Бот сбора заявок",
+        "Сайт → таблица",
+        "Синхронизация сервисов"
+      ]
+    }
+  ],
+  "nav": [
+    {
+      "hash": "#about",
+      "height": 720,
+      "y": 2326.7578125
+    },
+    {
+      "hash": "#process",
+      "height": 720,
+      "y": 1527.546875
+    },
+    {
+      "hash": "#projects",
+      "height": 720,
+      "y": -192.0859375
+    },
+    {
+      "hash": "#services",
+      "height": 720,
+      "y": -598.5859375
+    },
+    {
+      "hash": "#services",
+      "scrollY": 4494
+    },
+    {
+      "hash": "#projects",
+      "y": 1277.9140625
+    }
+  ],
+  "mobileNav": [
+    {
+      "hash": "#services",
+      "inert": false,
+      "overflow": "",
+      "y": 67.8125
+    },
+    {
+      "hash": "#projects",
+      "inert": false,
+      "overflow": "",
+      "y": 67.859375
+    },
+    {
+      "hash": "#process",
+      "inert": false,
+      "overflow": "",
+      "y": 68.203125
+    },
+    {
+      "hash": "#about",
+      "inert": false,
+      "overflow": "",
+      "y": 67.8046875
+    }
+  ],
+  "links": [
+    {
+      "href": "https://t.me/opskeeper?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9F%D0%BE%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D0%BB%20%D0%B2%D0%B0%D1%88%20%D1%81%D0%B0%D0%B9%D1%82%20%D0%B8%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82.",
+      "label": "Связаться",
+      "rel": "noopener noreferrer",
+      "target": "_blank"
+    },
+    {
+      "href": "https://t.me/opskeeper?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%95%D1%81%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B0%2C%20%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%83%D1%8E%20%D1%85%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C.",
+      "label": "Написать в Telegram",
+      "rel": "noopener noreferrer",
+      "target": "_blank"
+    },
+    {
+      "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+      "label": "Написать в MAX",
+      "rel": "noopener noreferrer",
+      "target": "_blank"
+    },
+    {
+      "href": "https://max.ru/u/f9LHodD0cOL3ZxdR2MdBHG-1wve5Qo86kG6e9FnepcXpbeAlAVVOr3iiv8o",
+      "label": "Написать в MAX",
+      "rel": "noopener noreferrer",
+      "target": "_blank"
+    },
+    {
+      "href": "https://t.me/opskeeper?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9F%D0%B8%D1%88%D1%83%20%D1%81%20%D0%B2%D0%B0%D1%88%D0%B5%D0%B3%D0%BE%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0.%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BE%D0%B1%D1%81%D1%83%D0%B4%D0%B8%D1%82%D1%8C%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D1%83.",
+      "label": "Написать в Telegram",
+      "rel": "noopener noreferrer",
+      "target": "_blank"
+    }
+  ],
+  "logs": [],
+  "copy": {
+    "before": 3568,
+    "after": 2375,
+    "reductionPercent": 33
+  }
+}

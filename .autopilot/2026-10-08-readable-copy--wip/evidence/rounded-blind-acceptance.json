@@ -1,0 +1,27 @@
+{
+  "brief": "latest 2026-10-08 clarification",
+  "scope": {
+    "outsideProjectsExactMatch": true,
+    "source": "independent TypeScript AST comparison of HEAD and current data/projects.ts"
+  },
+  "roundedCards": {
+    "status": "implemented",
+    "source": "independent review of fresh screenshots captured by root, plus source diff",
+    "observed": "desktop9 cards separated and rounded; mobile first card rounded and readable; no visible card clipping in supplied views",
+    "screenshots": [
+      "rounded-blind-desktop-1440.jpg",
+      "rounded-blind-mobile-375.jpg"
+    ]
+  },
+  "functionalAcceptance": {
+    "status": "not independently verified",
+    "reason": "cua.createBrowserTab iab returned Browser is not available; cua.getState browsers empty",
+    "all9Dialogs": "not attempted in latest version",
+    "filtersClosingFocus": "not attempted in latest version"
+  },
+  "bugsObserved": [],
+  "limitations": [
+    "No independent live browser acceptance; screenshot capture by root explicitly recorded"
+  ],
+  "cliChromium": "not rerun"
+}
