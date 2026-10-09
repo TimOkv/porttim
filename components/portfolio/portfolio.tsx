@@ -159,7 +159,6 @@ function SiteHeader() {
       transition={{ duration: 0.9, delay: reduced ? 0 : 0.9, ease }}
     >
       <a href="#top" className={styles.brand}>
-        <span>{text.monogram}</span>
         <span>{profile.name}</span>
       </a>
       <button
@@ -196,7 +195,7 @@ function SiteHeader() {
       </nav>
       <a href="#contact" className={styles.headerContact}>
         {text.contactShort}
-        <ArrowUpRight size={16} aria-hidden="true" />
+        <ArrowUpRight size={20} aria-hidden="true" />
       </a>
     </motion.header>
   );
@@ -680,10 +679,17 @@ function Contact() {
               href={getContactLink("footer")!}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.solidButton}
+              className={styles.messengerLink}
+              aria-label={text.contactTelegram}
+              title={text.contactTelegram}
             >
-              {text.contactTelegram}
-              <ArrowUpRight size={22} aria-hidden="true" />
+              <Image
+                src="/portfolio/telegram.svg"
+                alt=""
+                width={72}
+                height={72}
+                aria-hidden="true"
+              />
             </a>
           )}
           {profile.max && (
@@ -691,10 +697,17 @@ function Contact() {
               href={profile.max}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.outlineButton}
+              className={styles.messengerLink}
+              aria-label={text.contactMax}
+              title={text.contactMax}
             >
-              {text.contactMax}
-              <ArrowUpRight size={22} aria-hidden="true" />
+              <Image
+                src="/portfolio/max.svg"
+                alt=""
+                width={72}
+                height={72}
+                aria-hidden="true"
+              />
             </a>
           )}
           {!profile.telegram && !profile.max && (
