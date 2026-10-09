@@ -199,7 +199,7 @@ function SiteHeader() {
           </a>
         ))}
       </nav>
-      <a href="#contact" className={styles.headerContact}>
+      <a href="#messengers" className={styles.headerContact}>
         {text.contactShort}
         <ArrowUpRight size={20} aria-hidden="true" />
       </a>
@@ -675,7 +675,7 @@ function Contact() {
           <ArrowUpRight strokeWidth={0.8} aria-hidden="true" />
         </BigTitle>
       </a>
-      <div className={styles.contactBottom}>
+      <div className={styles.contactBottom} id="messengers">
         <Reveal>
           <p>{copy.contactSection.description}</p>
         </Reveal>
