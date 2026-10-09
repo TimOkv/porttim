@@ -159,7 +159,10 @@ function SiteHeader() {
       transition={{ duration: 0.9, delay: reduced ? 0 : 0.9, ease }}
     >
       <a href="#top" className={styles.brand}>
-        <span>{profile.name}</span>
+        <span className={styles.brandMark} aria-hidden="true">
+          {text.monogram}
+        </span>
+        <span className={styles.brandName}>{profile.name}</span>
       </a>
       <button
         ref={menuButton}

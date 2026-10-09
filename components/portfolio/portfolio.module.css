@@ -171,10 +171,11 @@
   right: 2%;
   top: 24px;
   border-radius: 22px;
-  padding: 18px 24px;
-  min-height: 96px;
+  padding: 14px 24px;
+  min-height: 80px;
   z-index: 8;
-  background: rgb(255 255 255 / 94%);
+  background: rgb(255 255 255 / 50%);
+  border: 1px solid rgb(255 255 255 / 60%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -183,20 +184,31 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 14px;
   flex-shrink: 0;
-  padding: 10px 18px;
-  min-height: 60px;
-  border-radius: 10px;
+  color: var(--ink);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.brandMark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 48px;
+  border-radius: 9px;
   background: #101110;
   color: #fff;
   font-family: var(--display);
-  font-size: 30px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+.brandName {
+  font-family: var(--display);
+  font-size: 24px;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
 }
 .page .brand:focus-visible {
   outline-color: var(--ink);
@@ -1017,20 +1029,20 @@
 .contactActions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
 }
 .messengerLink {
   display: grid;
   place-items: center;
-  width: 88px;
-  height: 88px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   transition: transform 0.3s;
 }
 .messengerLink img {
   display: block;
-  width: 72px;
-  height: 72px;
+  width: 40px;
+  height: 40px;
 }
 @media (hover: hover) {
   .messengerLink:hover {
@@ -1262,15 +1274,21 @@
     left: 4%;
     right: 4%;
     border-radius: 16px;
-    padding: 12px 10px;
-    min-height: 76px;
+    padding: 10px;
+    min-height: 70px;
     gap: 8px;
   }
   .brand {
-    font-size: clamp(16px, 4.8vw, 26px);
-    min-height: 50px;
-    padding: 10px 12px;
-    border-radius: 8px;
+    gap: 9px;
+  }
+  .brandMark {
+    width: 34px;
+    height: 40px;
+    font-size: 22px;
+    border-radius: 7px;
+  }
+  .brandName {
+    font-size: clamp(16px, 4.5vw, 22px);
   }
   .nav {
     display: none;
@@ -1537,15 +1555,15 @@
   }
   .contactActions {
     width: 100%;
-    gap: 16px;
+    gap: 10px;
   }
   .messengerLink {
-    width: 76px;
-    height: 76px;
+    width: 52px;
+    height: 52px;
   }
   .messengerLink img {
-    width: 64px;
-    height: 64px;
+    width: 36px;
+    height: 36px;
   }
   .solidButton,
   .outlineButton {
@@ -1580,6 +1598,11 @@
   }
   .dialogActions {
     flex-direction: column;
+  }
+}
+@media (max-width: 360px) {
+  .headerContact svg {
+    display: none;
   }
 }
 @media (prefers-reduced-motion: reduce) {
